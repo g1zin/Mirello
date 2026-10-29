@@ -86,3 +86,13 @@ Toda interface cotidiana deve ficar em pt-BR, com foco visível, mensagens de er
 - Banco atual: esquema 3. Exportação atual: versão 2, com importação compatível com versão 1. Patches de preferências não devem aplicar defaults aos campos ausentes.
 - Para um próximo estilo, acrescente uma opção validada, sua folha CSS e recursos locais; reutilize as quatro regiões e o hook, sem criar sistema de plugins.
 - Após mudanças visuais, execute `npm.cmd run test:appearance`, inspecione as capturas claro/escuro e menores, depois teste com `GRELLO_PACKAGED=1`. Migrações e importação antiga têm testes em `tests/appearance.test.ts`.
+
+## Publicação e privacidade
+
+- O repositório público é g1zin/grello; executáveis são distribuídos por GitHub Releases, fora do histórico.
+- Antes de publicar, execute npm.cmd run licenses e npm.cmd run audit:publication. Revise também arquivos/histórico manualmente; o scanner de padrões não substitui revisão.
+- Nunca grave tokens em scripts, arquivos, argumentos de commit ou remotes. Use autenticação já disponível ou login interativo oficial.
+- .local-archive contém preservações locais não publicadas; .tools contém ferramentas locais. Ambos devem continuar ignorados.
+- Preserve LICENSE (MIT existente), CREDITS.md, THIRD_PARTY_NOTICES.md e LICENSES ao atualizar dependências. Os avisos entram nos pacotes por extraResources.
+- Capturas públicas em docs/screenshots usam somente dados fictícios. Não publique JSONs brutos de testes que contenham caminhos pessoais.
+- Não mova tags já publicadas nem force push. Faça um novo commit e uma nova versão quando necessário.

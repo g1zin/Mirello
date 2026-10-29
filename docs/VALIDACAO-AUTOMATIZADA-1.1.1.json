@@ -1,0 +1,48 @@
+{
+  "version": "1.1.1",
+  "sourcePreserved": true,
+  "cleanInstall": true,
+  "unitTestsPassed": 13,
+  "functional": {
+    "passed": true,
+    "packaged": true,
+    "checks": [
+      "Criação de quadros, colunas e cartões offline no executável empacotado",
+      "Arrastar dentro da coluna e entre colunas altera a ordem persistida",
+      "Edição, etiquetas, prazo, checklist e busca por descrição sem executar conteúdo",
+      "Conclusão de cartões e movimento por menu",
+      "Duplicação, arquivamento/restauração e confirmação de exclusão",
+      "Renomear, ordenar e excluir coluna transferindo seus cartões",
+      "Renomear, ordenar, arquivar e restaurar quadros",
+      "Temas claro/escuro e personalização de cor e fundo",
+      "Isolamento, sandbox, ausência de Node na interface e bloqueio de novas janelas",
+      "Exportação, importação inválida sem alterações, mesclagem e substituição com backup",
+      "Fechar imediatamente após editar e reabrir preserva conteúdo, ordem e preferências"
+    ]
+  },
+  "appearance": {
+    "passed": true,
+    "packaged": true,
+    "checks": [
+      "Estilo Original continua padrão e cores existentes permanecem armazenadas",
+      "Original e Céu e Cerejeiras nos dois modos: capturas, controles visíveis, contraste e foco",
+      "Janela maximizada e janela menor: busca, filtros e navegação sem cortes",
+      "Movimento limitado à logo; reduzir movimento, minimizar e ocultar pausam as animações",
+      "Intensidade zero remove as camadas, preserva conteúdo opaco; opção de animações desativada",
+      "Arrastar, editar detalhes, pesquisar descrição e filtrar etiquetas com a decoração ativa",
+      "Preferências e conteúdo persistem ao reiniciar; voltar ao Original restaura as cores sem alterar modo"
+    ]
+  },
+  "portable": {
+    "passed": true,
+    "restarted": true
+  },
+  "package": {
+    "passed": true,
+    "version": "1.1.1",
+    "uiVersion": true,
+    "compiledFiles": 8,
+    "localArt": true,
+    "licenseFiles": 18
+  }
+}

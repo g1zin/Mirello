@@ -1,7 +1,78 @@
-﻿node_modules/
+# Dependencies and caches
+node_modules/
+.npm/
+.cache/
+.vite/
+.eslintcache
+*.tsbuildinfo
+.tools/
+
+# Generated application / packages
 dist/
 release/
-test-results/
-*.log
-*.sqlite*
+out/
+coverage/
 
+# Temporary tests / reports
+test-results/
+playwright-report/
+blob-report/
+*.log
+*.tmp
+*.temp
+
+# Local data / backups (never publish application data)
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*
+*.db3
+*.wal
+*.shm
+*.bak
+*.backup
+/backups/
+/data/
+.local-data/
+
+# Secrets and private configuration
+.env
+.env.*
+!.env.example
+!.env.sample
+.npmrc
+.pypirc
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+*credentials.local*
+*.local.json
+
+# Personal editor / OS files
+.vscode/
+.idea/
+*.user
+*.suo
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local preservation and packaging archives
+.local-archive/
+*.exe
+*.msi
+*.zip
+*.7z
+*.blockmap
+.git-credentials
+.gitconfig
+.ssh/
+id_rsa
+id_ed25519
+*.code-workspace

@@ -1,7 +1,7 @@
 {
   "name": "grello",
   "version": "1.1.1",
-  "description": "Seu espaÃ§o pessoal de organizaÃ§Ã£o, offline.",
+  "description": "Organização pessoal offline em quadros Kanban.",
   "author": "Grello",
   "license": "MIT",
   "private": true,
@@ -16,7 +16,11 @@
     "test:vertical": "node tests/vertical.mjs",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"tests/*.{ts,mjs}\" \"scripts/*.mjs\" package.json tsconfig.json",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\" \"tests/*.{ts,mjs}\" \"scripts/*.mjs\" package.json tsconfig.json",
-    "test:appearance": "node tests/appearance.mjs"
+    "test:appearance": "node tests/appearance.mjs",
+    "licenses": "node scripts/collect-licenses.mjs",
+    "prepackage": "npm run licenses",
+    "prepackage:dir": "npm run licenses",
+    "audit:publication": "node scripts/audit-publication.mjs"
   },
   "dependencies": {
     "lucide-react": "1.63.0",
@@ -68,6 +72,32 @@
     },
     "portable": {
       "artifactName": "Grello-Portatil-${version}.${ext}"
-    }
+    },
+    "extraResources": [
+      {
+        "from": "LICENSE",
+        "to": "Grello-LICENSE.txt"
+      },
+      {
+        "from": "THIRD_PARTY_NOTICES.md",
+        "to": "THIRD_PARTY_NOTICES.md"
+      },
+      {
+        "from": "LICENSES",
+        "to": "licenses"
+      },
+      {
+        "from": "CREDITS.md",
+        "to": "CREDITS.md"
+      }
+    ]
+  },
+  "homepage": "https://github.com/g1zin/grello",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/g1zin/grello.git"
+  },
+  "bugs": {
+    "url": "https://github.com/g1zin/grello/issues"
   }
 }
