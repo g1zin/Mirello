@@ -1,0 +1,287 @@
+/* One coordinated local style; functional surfaces never inherit decoration opacity. */
+:root[data-visual-style='sky-cherry'] {
+  --bg: #edf4fa;
+  --surface: #fcfdff;
+  --surface-soft: #edf2f9;
+  --sidebar: #f1f6fc;
+  --text: #233b59;
+  --text-secondary: #405570;
+  --muted: #536b82;
+  --line: #d4dfec;
+  --line-strong: #9fb3cb;
+  --success: #27664c;
+  --cherry-accent: #365e91;
+  --cherry-canvas: #e8f0f7;
+  --blossom: #f4afcb;
+  --blossom-light: #ffdaea;
+  --branch: #94758d;
+  --leaf: #87bda6;
+  --hill-far: #b2c9d9;
+  --hill-near: #9cbdc2;
+  --cloud: #ffffff;
+  --scene-image: url('../assets/sky-cherry/day.png');
+  --scene-title-protection: #f7fbffef;
+  --shadow: 0 2px 5px #3049690a, 0 8px 22px #30496906;
+}
+:root[data-visual-style='sky-cherry'][data-theme='dark'] {
+  --bg: #111c30;
+  --surface: #1d2c43;
+  --surface-soft: #18263c;
+  --sidebar: #15233a;
+  --text: #e8eefb;
+  --text-secondary: #c4d3ea;
+  --muted: #afbed6;
+  --line: #3a4d6b;
+  --line-strong: #6e85a4;
+  --success: #a5d8c1;
+  --cherry-accent: #adc9fc;
+  --cherry-canvas: #14233a;
+  --blossom: #b987b2;
+  --blossom-light: #d1a7c7;
+  --branch: #8f7d9f;
+  --leaf: #5d8b93;
+  --hill-far: #344663;
+  --hill-near: #365569;
+  --cloud: #617da8;
+  --scene-image: url('../assets/sky-cherry/night.png');
+  --scene-title-protection: #14243af0;
+  --shadow: 0 2px 8px #040c1b22, 0 8px 24px #040c1b11;
+}
+:root[data-visual-style='sky-cherry'] .visual-decoration {
+  display: block;
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  overflow: hidden;
+  z-index: 0;
+  opacity: var(--decoration-strength, 0.65);
+}
+:root[data-visual-style='sky-cherry'][data-decorations='off'] .visual-decoration {
+  display: none;
+}
+:root[data-visual-style='sky-cherry'] .visual-decoration svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.cherry-blossom {
+  fill: var(--blossom);
+}
+.cherry-highlight {
+  fill: var(--blossom-light);
+}
+.cherry-branch {
+  fill: none;
+  stroke: var(--branch);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.cherry-leaf {
+  fill: var(--leaf);
+}
+.still-petals {
+  fill: var(--blossom);
+}
+.distant-hill {
+  fill: var(--hill-far);
+}
+.near-hill {
+  fill: var(--hill-near);
+}
+.landscape-cloud {
+  fill: var(--cloud);
+}
+:root[data-visual-style='sky-cherry'] .sidebar {
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(165deg, var(--sidebar), var(--surface-soft));
+}
+:root[data-visual-style='sky-cherry'] .sidebar > :not(.visual-decoration) {
+  position: relative;
+  z-index: 1;
+}
+:root[data-visual-style='sky-cherry'] .decoration-sidebar {
+  inset: 0;
+  opacity: calc(var(--decoration-strength) * 0.38);
+}
+:root[data-visual-style='sky-cherry'] .board-link.active {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: calc(var(--s3) - 1px);
+}
+:root[data-visual-style='sky-cherry'] .sidebar-note {
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+}
+:root[data-visual-style='sky-cherry'] .brand {
+  isolation: isolate;
+}
+:root[data-visual-style='sky-cherry'] .brand > .brand-mark,
+:root[data-visual-style='sky-cherry'] .brand > span {
+  position: relative;
+  z-index: 1;
+}
+:root[data-visual-style='sky-cherry'] .brand-mark {
+  background: var(--cherry-accent);
+}
+:root[data-visual-style='sky-cherry'] .decoration-brand {
+  inset: -22px -12px -14px;
+  z-index: 0;
+  overflow: hidden;
+}
+.logo-petal {
+  position: absolute;
+  width: 7px;
+  height: 11px;
+  left: 65%;
+  top: 12%;
+  border-radius: 80% 5% 80% 30%;
+  background: var(--blossom);
+  animation: cherry-drift 19s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.logo-petal.petal-two {
+  left: 78%;
+  top: 24%;
+  width: 5px;
+  height: 8px;
+  animation-delay: -7s;
+  animation-duration: 23s;
+}
+.logo-petal.petal-three {
+  left: 91%;
+  top: 8%;
+  width: 6px;
+  height: 9px;
+  animation-delay: -13s;
+  animation-duration: 26s;
+}
+:root[data-decorative-motion='running'] .logo-petal {
+  animation-play-state: running;
+}
+@keyframes cherry-drift {
+  0% {
+    transform: translate(0, -4px) rotate(-12deg);
+  }
+  40% {
+    transform: translate(-10px, 9px) rotate(30deg);
+  }
+  75% {
+    transform: translate(-2px, 19px) rotate(70deg);
+  }
+  100% {
+    transform: translate(0, -4px) rotate(-12deg);
+  }
+}
+:root[data-visual-style='sky-cherry'] .workspace {
+  isolation: isolate;
+  background: var(--cherry-canvas);
+  --accent: var(--cherry-accent);
+}
+:root[data-visual-style='sky-cherry'] .decoration-cover {
+  inset: 0 0 auto;
+  height: 238px;
+}
+.cover-painting {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to bottom, transparent 68%, var(--cherry-canvas)), var(--scene-image);
+  background-size: cover;
+  background-position: center 55%;
+}
+:root[data-visual-style='sky-cherry'] .decoration-canvas {
+  inset: 230px 0 0;
+  opacity: calc(var(--decoration-strength) * 0.29);
+}
+:root[data-visual-style='sky-cherry'] .board-header,
+:root[data-visual-style='sky-cherry'] .toolbar,
+:root[data-visual-style='sky-cherry'] .filter-summary {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+:root[data-visual-style='sky-cherry'] .board-header > div:first-child {
+  position: relative;
+  isolation: isolate;
+  max-width: 68%;
+}
+:root[data-visual-style='sky-cherry'] .board-header > div:first-child::before {
+  content: '';
+  position: absolute;
+  inset: -12px -16px;
+  z-index: -1;
+  background: var(--scene-title-protection);
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+}
+:root[data-visual-style='sky-cherry'] .toolbar {
+  background: linear-gradient(
+    transparent,
+    color-mix(in srgb, var(--cherry-canvas) 82%, transparent)
+  );
+}
+:root[data-visual-style='sky-cherry'] .kanban {
+  position: relative;
+  z-index: 1;
+}
+:root[data-visual-style='sky-cherry'] .column {
+  background: color-mix(in srgb, var(--surface-soft) 97%, transparent);
+  border: 1px solid var(--line);
+}
+:root[data-visual-style='sky-cherry'] .card {
+  background: var(--surface);
+  border-color: var(--line);
+}
+:root[data-visual-style='sky-cherry'] .new-column {
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+}
+:root[data-visual-style='sky-cherry'] .board-footer {
+  position: relative;
+  z-index: 1;
+  background: color-mix(in srgb, var(--surface-soft) 95%, transparent);
+}
+:root[data-visual-style='sky-cherry'] .workspace > .empty {
+  position: relative;
+  z-index: 1;
+}
+:root[data-visual-style='sky-cherry'] .filter-summary {
+  background: var(--cherry-canvas);
+}
+@media (max-width: 1200px) {
+  :root[data-visual-style='sky-cherry'] .decoration-cover {
+    height: 278px;
+  }
+  :root[data-visual-style='sky-cherry'] .decoration-canvas {
+    top: 270px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .logo-petal {
+    animation: none !important;
+  }
+}
+
+/* Detailed artwork uses the existing placements and region opacity unchanged. */
+.blossom-night {
+  display: none;
+}
+:root[data-theme='dark'] .blossom-day {
+  display: none;
+}
+:root[data-theme='dark'] .blossom-night {
+  display: inline;
+}
+.logo-petal {
+  background-color: transparent;
+  background-image: url('../assets/sky-cherry/petal-day.svg');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+:root[data-theme='dark'] .logo-petal {
+  background-image: url('../assets/sky-cherry/petal-night.svg');
+}
+
+/* A color-only night adaptation preserves identical contours and alpha in both modes. */
+:root[data-theme='dark'] .painted-blossom-art {
+  filter: saturate(0.92) brightness(0.9);
+}

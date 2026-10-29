@@ -1,0 +1,73 @@
+{
+  "name": "grello",
+  "version": "1.1.1",
+  "description": "Seu espaÃ§o pessoal de organizaÃ§Ã£o, offline.",
+  "author": "Grello",
+  "license": "MIT",
+  "private": true,
+  "main": "dist/main.cjs",
+  "scripts": {
+    "dev": "npm run build && electron .",
+    "build": "tsc --noEmit && node scripts/build.mjs",
+    "test": "tsx --test tests/*.test.ts",
+    "test:e2e": "node tests/e2e.mjs",
+    "package": "npm run build && electron-builder --win nsis portable --x64",
+    "package:dir": "npm run build && electron-builder --dir --win --x64",
+    "test:vertical": "node tests/vertical.mjs",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"tests/*.{ts,mjs}\" \"scripts/*.mjs\" package.json tsconfig.json",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\" \"tests/*.{ts,mjs}\" \"scripts/*.mjs\" package.json tsconfig.json",
+    "test:appearance": "node tests/appearance.mjs"
+  },
+  "dependencies": {
+    "lucide-react": "1.63.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "electron": "45.1.0",
+    "electron-builder": "26.18.0",
+    "esbuild": "0.28.2",
+    "prettier": "3.9.10",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vite": "8.3.5"
+  },
+  "build": {
+    "appId": "com.grello.desktop",
+    "productName": "Grello",
+    "asar": true,
+    "files": [
+      "dist/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "assets/icon.ico",
+      "signExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "deleteAppDataOnUninstall": false,
+      "artifactName": "Grello-Instalador-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "Grello-Portatil-${version}.${ext}"
+    }
+  }
+}
