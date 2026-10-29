@@ -1,0 +1,116 @@
+{
+  "format": "grello",
+  "version": 2,
+  "exportedAt": "2026-10-29T19:20:27.602Z",
+  "data": {
+    "boards": [
+      {
+        "id": "605dfe91-d0f3-46ba-a5e7-0bec65b8b425",
+        "title": "Catower Defense — exemplo fictício",
+        "accent": "#347568",
+        "background": "#eef2ef",
+        "archived": false
+      }
+    ],
+    "columns": [
+      {
+        "id": "e0381e5c-7101-411f-a257-3a40df5e0661",
+        "boardId": "605dfe91-d0f3-46ba-a5e7-0bec65b8b425",
+        "title": "A fazer"
+      },
+      {
+        "id": "7925f84c-961c-4800-91c8-0efff1295f47",
+        "boardId": "605dfe91-d0f3-46ba-a5e7-0bec65b8b425",
+        "title": "Concluído"
+      }
+    ],
+    "cards": [
+      {
+        "id": "1e0a9b79-1708-4d1f-83c5-75532c4a45fb",
+        "boardId": "605dfe91-d0f3-46ba-a5e7-0bec65b8b425",
+        "columnId": "e0381e5c-7101-411f-a257-3a40df5e0661",
+        "title": "Esboçar uma torre de exemplo",
+        "description": "REFERÊNCIA FICTÍCIA: não é o planejamento final do Catower Defense.\nDescrever uma torre imaginária e sua função. O prazo abaixo é apenas demonstrativo.",
+        "labelIds": [
+          "70360d21-164c-4357-b2dd-e33eb673ac8b",
+          "93dd4bff-bd07-40ed-8f80-a2117d32c374"
+        ],
+        "due": "2026-11-12",
+        "completed": false,
+        "checklist": [
+          {
+            "id": "6bfd457e-ef17-42a4-b302-33abe3cd12ce",
+            "title": "Escrever a ideia inicial",
+            "done": true
+          },
+          {
+            "id": "f749d0e7-6cc2-4929-ada4-7d827a148fb6",
+            "title": "Revisar o esboço",
+            "done": false
+          }
+        ],
+        "archived": false
+      },
+      {
+        "id": "a8eccfb7-fb04-4c0a-a9c5-4876decb420e",
+        "boardId": "605dfe91-d0f3-46ba-a5e7-0bec65b8b425",
+        "columnId": "e0381e5c-7101-411f-a257-3a40df5e0661",
+        "title": "Anotar uma ideia sem prazo",
+        "description": "Exemplo fictício de cartão sem prazo e sem checklist. Substituir pelo conteúdo do planejamento futuro.",
+        "labelIds": [
+          "70360d21-164c-4357-b2dd-e33eb673ac8b"
+        ],
+        "due": null,
+        "completed": false,
+        "checklist": [],
+        "archived": false
+      },
+      {
+        "id": "d392668e-47d1-4251-b9b0-0623266a251f",
+        "boardId": "605dfe91-d0f3-46ba-a5e7-0bec65b8b425",
+        "columnId": "7925f84c-961c-4800-91c8-0efff1295f47",
+        "title": "Concluir uma tarefa de demonstração",
+        "description": "Tarefa inteiramente fictícia, marcada como concluída para demonstrar o formato. Estar na coluna Concluído não substitui completed: true.",
+        "labelIds": [
+          "93dd4bff-bd07-40ed-8f80-a2117d32c374"
+        ],
+        "due": "2026-11-10",
+        "completed": true,
+        "checklist": [
+          {
+            "id": "f051ec00-e519-4ec4-8b8d-8fca44912f0e",
+            "title": "Criar o rascunho fictício",
+            "done": true
+          },
+          {
+            "id": "082dcce6-ffde-477c-aeae-0407c702ae70",
+            "title": "Conferir o exemplo",
+            "done": true
+          }
+        ],
+        "archived": false
+      }
+    ],
+    "labels": [
+      {
+        "id": "70360d21-164c-4357-b2dd-e33eb673ac8b",
+        "boardId": "605dfe91-d0f3-46ba-a5e7-0bec65b8b425",
+        "title": "Design",
+        "color": "#b35b6d"
+      },
+      {
+        "id": "93dd4bff-bd07-40ed-8f80-a2117d32c374",
+        "boardId": "605dfe91-d0f3-46ba-a5e7-0bec65b8b425",
+        "title": "Protótipo",
+        "color": "#347568"
+      }
+    ],
+    "settings": {
+      "theme": "system",
+      "accent": "#347568",
+      "visualStyle": "original",
+      "decorationIntensity": 65,
+      "decorativeAnimations": true
+    }
+  }
+}
