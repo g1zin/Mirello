@@ -89,7 +89,7 @@ Toda interface cotidiana deve ficar em pt-BR, com foco visível, mensagens de er
 
 ## Publicação e privacidade
 
-- O repositório público é g1zin/grello; executáveis são distribuídos por GitHub Releases, fora do histórico.
+- O repositório público é g1zin/Mirello (anteriormente g1zin/grello); executáveis são distribuídos por GitHub Releases, fora do histórico.
 - Antes de publicar, execute npm.cmd run licenses e npm.cmd run audit:publication. Revise também arquivos/histórico manualmente; o scanner de padrões não substitui revisão.
 - Nunca grave tokens em scripts, arquivos, argumentos de commit ou remotes. Use autenticação já disponível ou login interativo oficial.
 - .local-archive contém preservações locais não publicadas; .tools contém ferramentas locais. Ambos devem continuar ignorados.
