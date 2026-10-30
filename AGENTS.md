@@ -81,9 +81,9 @@ Toda interface cotidiana deve ficar em pt-BR, com foco visível, mensagens de er
 - `styles/appearance.css`: controles de seleção; `styles/sky-cherry.css`: tokens e composição do estilo.
 - `assets/sky-cherry`: panoramas locais e registro dos prompts. Mantenha os PNGs no projeto e no build; não use caminhos da pasta de geração.
 - A intensidade só altera camadas decorativas. Nunca aplique opacity no ancestral do conteúdo funcional.
-- Apenas a região da marca tem animações. Sempre respeite prefers-reduced-motion, opção salva e pausa ao ocultar/minimizar.
+- Desde 1.2.0, a marca e cinco pétalas na lateral têm animações CSS; não adicione movimento a outras regiões. Sempre respeite prefers-reduced-motion, opção salva e pausa ao ocultar/minimizar.
 - Céu e Cerejeiras usa paleta coordenada. Não regrave as cores personalizadas dos quadros para aplicar um estilo. Elas voltam no Original; os marcadores laterais mantêm a identificação por cor.
-- Banco atual: esquema 3. Exportação atual: versão 2, com importação compatível com versão 1. Patches de preferências não devem aplicar defaults aos campos ausentes.
+- Banco atual: esquema 4. Pacote .grello: manifesto 1 e documento JSON 3. Importação continua compatível com JSON 1 e 2. Patches de preferências não devem aplicar defaults aos campos ausentes.
 - Para um próximo estilo, acrescente uma opção validada, sua folha CSS e recursos locais; reutilize as quatro regiões e o hook, sem criar sistema de plugins.
 - Após mudanças visuais, execute `npm.cmd run test:appearance`, inspecione as capturas claro/escuro e menores, depois teste com `GRELLO_PACKAGED=1`. Migrações e importação antiga têm testes em `tests/appearance.test.ts`.
 
@@ -96,3 +96,23 @@ Toda interface cotidiana deve ficar em pt-BR, com foco visível, mensagens de er
 - Preserve LICENSE (MIT existente), CREDITS.md, THIRD_PARTY_NOTICES.md e LICENSES ao atualizar dependências. Os avisos entram nos pacotes por extraResources.
 - Capturas públicas em docs/screenshots usam somente dados fictícios. Não publique JSONs brutos de testes que contenham caminhos pessoais.
 - Não mova tags já publicadas nem force push. Faça um novo commit e uma nova versão quando necessário.
+
+## Quadros visuais (1.2.0)
+
+- Editor: Excalidraw 0.18.1 (MIT), em src/renderer/visual. Não exponha sua API ou filesystem no window; use a ponte restrita.
+- src/shared/visual.ts valida elementos permitidos, cenas, imagens e documentos. Não aceite embeds, HTML, links externos ou conteúdo ativo.
+- src/data/package.ts valida ZIP antes e durante a descompactação: nomes permitidos, limites, hashes e referências. Nunca extraia nomes arbitrários do pacote para disco.
+- src/data/images.ts e src/main/visualIpc.ts gerenciam arquivos imutáveis em userData/assets. JPEG/WebP são convertidos localmente em PNG pelo Chromium antes da validação/gravação final.
+- src/domain/visualMerge.ts remapeia tarefas, cenas, elementos, grupos, vínculos, checklists e recursos. Referências a cartões excluídos continuam indisponíveis, sem apontar para tarefas do destino.
+- Migração 4 acrescenta tabelas separadas; não altere as migrações 1–3. Cenas são gravadas em uma linha após 800 ms de pausa, nunca por ponto do ponteiro.
+- Troca de aba/quadro, abertura das configurações e fechamento devem aguardar prepareClose e operações de imagem. Falha de gravação impede saída e mantém o conteúdo para tentar novamente.
+- Backups novos são pastas .grello-backup com grello.sqlite, assets e manifest.json; antes de migrar ou substituir. Não trate SQLite isolado como backup completo de imagens. Não remova recursos de exclusões/undo nem de backups automaticamente.
+- JSONs antigos produzem cenas vazias. Preserve docs/importacao/grello-exemplo.json como fixture 1.1.1/v2, sem regravá-lo com o novo exportador. Novo material em docs/importacao.
+- scripts/build.mjs copia fontes locais e redireciona o fallback CDN do editor para grello://app/excalidraw. Não libere a rede/CSP para corrigir falta de recurso. Confira esse ajuste ao atualizar a biblioteca.
+- Comandos adicionais: npm.cmd run test:visual; npm.cmd run test:petals. Ambos aceitam GRELLO_PACKAGED=1. Colagem e diálogos são simulados apenas dentro do processo de teste; não leia a área de transferência pessoal.
+- test:petals observa 90 segundos por modo, verifica controles, redução de movimentos e pausa por visibilidade. Não use temporizadores JavaScript para animar as pétalas no aplicativo.
+- A versão 1.2.0 está em avaliação local; não publique nova tag/Release sem autorização posterior do usuário.
+
+- O empacotamento usa scripts/prepare-package.mjs e .package-app (ignorado). O manifesto temporário não declara dependências porque main/preload/renderer já estão empacotados pelo build; mantenha dependências e lockfile completos na raiz. Não adicione módulos Node externos sem atualizar essa estratégia e os testes do executável.
+
+- Inserções programáticas no editor usam flushSync; o fechamento espera operações de imagem e captura o estado final mesmo sem novo onChange. Preserve o teste que troca de aba imediatamente após adicionar uma imagem e o teste com câmera ampliada.

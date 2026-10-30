@@ -1,6 +1,12 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import type { Bridge } from '../shared/model';
 const bridge: Bridge = {
+  loadVisual: (id) => ipcRenderer.invoke('grello:visual-load', id),
+  saveVisual: (scene) => ipcRenderer.invoke('grello:visual-save', scene),
+  pickImages: () => ipcRenderer.invoke('grello:image-pick'),
+  addImage: (bytes) => ipcRenderer.invoke('grello:image-add', bytes),
+  clipboardImage: () => ipcRenderer.invoke('grello:image-clipboard'),
+  readImage: (id) => ipcRenderer.invoke('grello:image-read', id),
   onVisibilityChanged: (callback) => {
     const handler = (_event: unknown, visible: unknown) => {
       if (typeof visible === 'boolean') callback(visible);

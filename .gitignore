@@ -76,3 +76,6 @@ Desktop.ini
 id_rsa
 id_ed25519
 *.code-workspace
+
+# Reproducible bundled packaging stage
+.package-app/

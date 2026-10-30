@@ -15,7 +15,7 @@ As artes geradas com IA estão identificadas como tal; não são apresentadas co
 
 ## Fontes
 
-A interface usa Segoe UI Variable/Segoe UI disponíveis no Windows e fallback sans-serif. **Nenhum arquivo de Segoe UI é redistribuído** pelo projeto. Não há pacote de fonte de interface adicionado ao código. A composição bitmap do ícone não contém uma fonte embutida; componentes internos do Electron seguem os avisos da sua distribuição.
+A interface usa Segoe UI Variable/Segoe UI disponíveis no Windows e fallback sans-serif. **Nenhum arquivo de Segoe UI é redistribuído** pelo projeto. Desde 1.2.0, o editor visual inclui as fontes locais documentadas abaixo; a interface principal continua usando a fonte do sistema. A composição bitmap do ícone não contém uma fonte embutida; componentes internos do Electron seguem os avisos da sua distribuição.
 
 A documentação da Microsoft distingue o uso/renderização e a criação de imagens da redistribuição dos arquivos de fonte: [FAQ oficial de fontes do Windows](https://learn.microsoft.com/en-us/typography/fonts/font-faq).
 
@@ -35,3 +35,13 @@ O inventário e os textos integrais copiados estão em [THIRD_PARTY_NOTICES.md](
 Os arquivos de licença/avisos são incluídos como recursos dos pacotes, além dos avisos já presentes no runtime Electron. Licenças de terceiros não são substituídas pela licença do Grello.
 
 Os executáveis Windows desta versão não recebem assinatura digital comercial.
+
+## Quadro visual na versão local 1.2.0
+
+O editor utiliza Excalidraw 0.18.1, licença MIT. Sua integração no Grello usa recursos locais e não habilita colaboração, serviços remotos, embeds nem chave de produção. A referência verificada é a documentação oficial e o LICENSE do tag v0.18.1. O build adapta apenas o endereço de fallback das fontes para os arquivos empacotados; não remove avisos de autoria.
+
+A interface principal continua com Segoe UI do Windows, sem redistribuir seus arquivos. O editor acrescenta fontes locais inalteradas da distribuição Excalidraw: Assistant, Cascadia Code, Excalifont, Liberation Sans, Lilita One, Nunito, Virgil e Xiaolai (SIL OFL 1.1), e Comic Shanns (MIT). Copyrights, autores, nomes reservados e licenças estão em LICENSES/font-*.txt. Os avisos foram conferidos também nos metadados dos arquivos WOFF2 distribuídos. Excalifont deriva de Virgil; os avisos de ambos são preservados.
+
+fflate 0.8.3 (MIT) implementa os pacotes ZIP. image-size 2.0.4 (MIT) confere dimensões de imagens antes da decodificação. A normalização de imagens acontece localmente no Chromium e no Electron, sem serviço externo. As cinco pétalas da lateral reutilizam as artes SVG locais já existentes; sua animação usa CSS.
+
+Os testes desta etapa são automatizados, com dados fictícios. Não se atribui a Guilherme uma aprovação ou novos testes manuais que ainda não ocorreram. A entrega 1.2.0 permanece local até sua avaliação.

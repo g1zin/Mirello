@@ -91,7 +91,7 @@ test('exportação/reimportação preserva todo o conteúdo, preferências e ord
   assert.deepEqual(db.read().state, original);
   const backup = readdirSync(join(path, 'backups'))[0],
     restoreDir = dir();
-  copyFileSync(join(path, 'backups', backup), join(restoreDir, 'grello.sqlite'));
+  copyFileSync(join(path, 'backups', backup, 'grello.sqlite'), join(restoreDir, 'grello.sqlite'));
   const restored = new Store(restoreDir);
   assert.deepEqual(restored.read().state, previous);
   restored.close();
@@ -144,7 +144,7 @@ test('importação inválida e ações inválidas não alteram o banco', () => {
   assert.equal(readdirSync(db.backups).length, 0);
   db.close();
 });
-test('migração v1 → v3 cria backup anterior e preserva entidades e preferências', () => {
+test('migração v1 → v4 cria backup anterior e preserva entidades e preferências', () => {
   const path = dir(),
     file = join(path, 'grello.sqlite'),
     legacy = new DatabaseSync(file);
@@ -163,7 +163,7 @@ test('migração v1 → v3 cria backup anterior e preserva entidades e preferên
   assert.deepEqual(db.read().state.boards, [b]);
   assert.equal(db.read().revision, 0);
   const backup = readdirSync(db.backups)[0],
-    old = new DatabaseSync(join(db.backups, backup));
+    old = new DatabaseSync(join(db.backups, backup, 'grello.sqlite'));
   assert.equal(old.prepare('PRAGMA user_version').get()!.user_version, 1);
   old.close();
   db.close();

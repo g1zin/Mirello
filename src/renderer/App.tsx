@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { useEffect, useState } from 'react';
 import {
   LayoutDashboard,
@@ -29,10 +30,14 @@ import {
   DeleteColumn,
 } from './components/Panels';
 
+const VisualEditor = lazy(() =>
+  import('./visual/VisualEditor').then((m) => ({ default: m.VisualEditor }))
+);
 export function App() {
   const w = useWorkspace(),
     s = w.state;
   const [active, setActive] = useState<string>(() => localStorage.getItem('grello:board') || ''),
+    [tab, setTab] = useState<'tasks' | 'visual'>('tasks'),
     [panel, setPanel] = useState(''),
     [cardId, setCardId] = useState(''),
     [columnId, setColumnId] = useState(''),
@@ -69,7 +74,7 @@ export function App() {
   useAppearance(s?.settings);
   async function newBoard(e: React.FormEvent) {
     e.preventDefault();
-    if (!title.trim()) return;
+    if (!title.trim() || !(await prepareClose())) return;
     if (await w.dispatch({ type: 'board.create', title })) {
       setPanel('');
       setTitle('');
@@ -131,7 +136,12 @@ export function App() {
             <button
               key={b.id}
               className={'board-link ' + (board?.id === b.id ? 'active' : '')}
-              onClick={() => setActive(b.id)}
+              onClick={async () => {
+                if (await prepareClose()) {
+                  await w.waitForIdle();
+                  setActive(b.id);
+                }
+              }}
             >
               <i style={{ background: b.accent }} />
               <span>{b.title}</span>
@@ -164,7 +174,15 @@ export function App() {
             <Archive size={17} />
             Itens arquivados
           </button>
-          <button className="sidebar-action" onClick={() => setPanel('settings')}>
+          <button
+            className="sidebar-action"
+            onClick={async () => {
+              if (await prepareClose()) {
+                await w.waitForIdle();
+                setPanel('settings');
+              }
+            }}
+          >
             <Settings size={17} />
             Configurações
           </button>
@@ -182,7 +200,11 @@ export function App() {
             ) : (
               <>
                 <Check size={13} />
-                {w.saved ? 'Alterações salvas' : 'Tudo salvo neste computador'}
+                {tab === 'visual'
+                  ? 'Salvamento indicado no quadro visual'
+                  : w.saved
+                    ? 'Alterações salvas'
+                    : 'Tudo salvo neste computador'}
               </>
             )}
           </div>
@@ -204,12 +226,45 @@ export function App() {
         )}
         {board ? (
           <BoardView
+            tabs={
+              <div className="board-tabs" role="tablist" aria-label="Visão do quadro">
+                <button
+                  role="tab"
+                  aria-selected={tab === 'tasks'}
+                  onClick={async () => {
+                    if (tab !== 'tasks' && (await prepareClose())) setTab('tasks');
+                  }}
+                >
+                  Tarefas
+                </button>
+                <button
+                  role="tab"
+                  aria-selected={tab === 'visual'}
+                  onClick={async () => {
+                    if (tab !== 'visual' && (await prepareClose())) setTab('visual');
+                  }}
+                >
+                  Quadro visual
+                </button>
+              </div>
+            }
+            visual={
+              tab === 'visual' ? (
+                <Suspense
+                  fallback={<div className="visual-loading">Preparando seu quadro visual…</div>}
+                >
+                  <VisualEditor key={board.id} boardId={board.id} state={s} openCard={setCardId} />
+                </Suspense>
+              ) : undefined
+            }
             key={board.id}
             state={s}
             board={board}
             dispatch={w.dispatch}
             openCard={setCardId}
-            editBoard={() => setPanel('board')}
+            editBoard={async () => {
+              if (await prepareClose()) setPanel('board');
+            }}
             openLabels={() => setPanel('labels')}
             openArchive={() => setPanel('archive')}
             deleteColumn={(id) => {
@@ -343,6 +398,11 @@ export function App() {
               {preview.boards} quadros, {preview.columns} colunas e {preview.cards} cartões.
             </strong>
           </p>
+          <p className="muted">
+            {preview.legacy
+              ? 'Este JSON contém tarefas. Os quadros importados terão um quadro visual vazio.'
+              : `${preview.visualBoards} quadros visuais e ${preview.assets} imagens locais no arquivo.`}
+          </p>
           <div className="import-choice">
             <h3>Mesclar</h3>
             <p>
@@ -353,7 +413,10 @@ export function App() {
               className="primary"
               disabled={w.pending > 0}
               onClick={async () => {
-                if (await w.run(() => window.grello.importFile(preview.token, 'merge'), w.accept))
+                if (
+                  (await prepareClose()) &&
+                  (await w.run(() => window.grello.importFile(preview.token, 'merge'), w.accept))
+                )
                   setPreview(null);
               }}
             >
@@ -377,10 +440,15 @@ export function App() {
                   )
                 ) {
                   if (
-                    await w.run(() => window.grello.importFile(preview.token, 'replace'), w.accept)
+                    (await prepareClose()) &&
+                    (await w.run(
+                      () => window.grello.importFile(preview.token, 'replace'),
+                      w.accept
+                    ))
                   ) {
                     setPreview(null);
                     setActive('');
+                    setTab('tasks');
                   }
                 }
               }}

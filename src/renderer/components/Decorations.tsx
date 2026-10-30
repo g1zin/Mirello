@@ -63,82 +63,103 @@ export function Decorations({ region }: { region: Region }) {
           <span className="logo-petal petal-three" />
         </>
       ) : region === 'sidebar' ? (
-        <svg viewBox="0 0 250 900" preserveAspectRatio="xMaxYMax slice">
-          <path
-            className="cherry-branch"
-            d="M264 883Q234 710 260 535M248 733Q209 692 190 642M251 635Q232 600 206 588M233 704L211 686"
-          />
-          <Blossom x={248} y={550} r={38} illustrated />
-          <Blossom x={235} y={610} r={30} illustrated />
-          <Blossom x={212} y={650} r={24} illustrated />
-          <Blossom x={248} y={696} r={38} illustrated />
-          <Blossom x={254} y={810} r={42} illustrated />
-          <Blossom x={207} y={852} r={27} illustrated />
-          <path
-            className="cherry-leaf"
-            d="M204 700q-22-26-37-7 11 22 37 7M247 780q-35-17-37 6 19 15 37-6"
-          />
-          <g className="still-petals">
-            <g transform="rotate(30 225 280)">
-              <image
-                className="blossom-day"
-                href={petalDay}
-                x={220}
-                y={271}
-                width={10}
-                height={18}
-              />
-              <image
-                className="blossom-night"
-                href={petalNight}
-                x={220}
-                y={271}
-                width={10}
-                height={18}
-              />
+        <>
+          <div className="falling-petals">
+            {[0, 1, 2, 3, 4].map((i) => (
+              <span key={i} className="falling-petal" />
+            ))}
+          </div>
+          <svg viewBox="0 0 250 900" preserveAspectRatio="xMaxYMax slice">
+            <path
+              className="cherry-branch"
+              d="M264 883Q234 710 260 535M248 733Q209 692 190 642M251 635Q232 600 206 588M233 704L211 686"
+            />
+            <Blossom x={248} y={550} r={38} illustrated />
+            <Blossom x={235} y={610} r={30} illustrated />
+            <Blossom x={212} y={650} r={24} illustrated />
+            <Blossom x={248} y={696} r={38} illustrated />
+            <Blossom x={254} y={810} r={42} illustrated />
+            <Blossom x={207} y={852} r={27} illustrated />
+            <path
+              className="cherry-leaf"
+              d="M204 700q-22-26-37-7 11 22 37 7M247 780q-35-17-37 6 19 15 37-6"
+            />
+            <g className="still-petals">
+              <g transform="rotate(30 225 280)">
+                <image
+                  className="blossom-day"
+                  href={petalDay}
+                  x={220}
+                  y={271}
+                  width={10}
+                  height={18}
+                />
+                <image
+                  className="blossom-night"
+                  href={petalNight}
+                  x={220}
+                  y={271}
+                  width={10}
+                  height={18}
+                />
+              </g>
+              <g transform="rotate(-30 23 420)">
+                <image
+                  className="blossom-day"
+                  href={petalDay}
+                  x={19}
+                  y={413}
+                  width={8}
+                  height={14}
+                />
+                <image
+                  className="blossom-night"
+                  href={petalNight}
+                  x={19}
+                  y={413}
+                  width={8}
+                  height={14}
+                />
+              </g>
+              <g transform="rotate(0 224 486)">
+                <image
+                  className="blossom-day"
+                  href={petalDay}
+                  x={220}
+                  y={479}
+                  width={8}
+                  height={14}
+                />
+                <image
+                  className="blossom-night"
+                  href={petalNight}
+                  x={220}
+                  y={479}
+                  width={8}
+                  height={14}
+                />
+              </g>
+              <g transform="rotate(35 45 797)">
+                <image
+                  className="blossom-day"
+                  href={petalDay}
+                  x={41}
+                  y={790}
+                  width={8}
+                  height={14}
+                />
+                <image
+                  className="blossom-night"
+                  href={petalNight}
+                  x={41}
+                  y={790}
+                  width={8}
+                  height={14}
+                />
+              </g>
             </g>
-            <g transform="rotate(-30 23 420)">
-              <image className="blossom-day" href={petalDay} x={19} y={413} width={8} height={14} />
-              <image
-                className="blossom-night"
-                href={petalNight}
-                x={19}
-                y={413}
-                width={8}
-                height={14}
-              />
-            </g>
-            <g transform="rotate(0 224 486)">
-              <image
-                className="blossom-day"
-                href={petalDay}
-                x={220}
-                y={479}
-                width={8}
-                height={14}
-              />
-              <image
-                className="blossom-night"
-                href={petalNight}
-                x={220}
-                y={479}
-                width={8}
-                height={14}
-              />
-            </g>
-            <g transform="rotate(35 45 797)">
-              <image className="blossom-day" href={petalDay} x={41} y={790} width={8} height={14} />
-              <image
-                className="blossom-night"
-                href={petalNight}
-                x={41}
-                y={790}
-                width={8}
-                height={14}
-              />
-            </g>
-          </g>
-        </svg>
+          </svg>
+        </>
       ) : (
         <svg viewBox="0 0 1440 700" preserveAspectRatio="xMidYMax slice">
           <path className="distant-hill" d="M0 553Q200 466 420 584T850 561T1440 522V700H0Z" />

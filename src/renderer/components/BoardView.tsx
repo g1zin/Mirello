@@ -110,6 +110,8 @@ export function BoardView({
   openLabels,
   openArchive,
   deleteColumn,
+  tabs,
+  visual,
 }: {
   state: State;
   board: Board;
@@ -119,6 +121,8 @@ export function BoardView({
   openLabels: () => void;
   openArchive: () => void;
   deleteColumn: (id: string) => void;
+  tabs?: React.ReactNode;
+  visual?: React.ReactNode;
 }) {
   const [search, setSearch] = useState(''),
     [label, setLabel] = useState(''),
@@ -184,306 +188,320 @@ export function BoardView({
           </button>
         </div>
       </header>
-      <div className="toolbar">
-        <label className="search">
-          <Search size={18} />
-          <input
-            aria-label="Pesquisar cartões"
-            placeholder="Pesquisar neste quadro..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          {search && (
-            <button
-              className="icon-button"
-              aria-label="Limpar pesquisa"
-              onClick={() => setSearch('')}
-            >
-              <X size={15} />
-            </button>
-          )}
-        </label>
-        <div className="filters">
-          <select
-            aria-label="Filtrar por etiqueta"
-            value={label}
-            onChange={(e) => setLabel(e.target.value)}
-          >
-            <option value="">Todas as etiquetas</option>
-            {labels.map((l) => (
-              <option key={l.id} value={l.id}>
-                {l.title}
-              </option>
-            ))}
-          </select>
-          <select
-            aria-label="Filtrar por prazo"
-            value={due}
-            onChange={(e) => setDue(e.target.value)}
-          >
-            <option value="">Todos os prazos</option>
-            <option value="overdue">Atrasados</option>
-            <option value="soon">Próximos 7 dias</option>
-            <option value="later">Depois de 7 dias</option>
-            <option value="none">Sem prazo</option>
-            <option value="done">Concluídos</option>
-            <option value="open">Não concluídos</option>
-          </select>
-          <button className="soft-button" onClick={openLabels}>
-            <Tags size={16} />
-            Etiquetas
-          </button>
-        </div>
-      </div>
-      {filtered && (
-        <div className="filter-summary">
-          {visible.length} {visible.length === 1 ? 'cartão encontrado' : 'cartões encontrados'}
-          <button
-            className="text-button"
-            onClick={() => {
-              setSearch('');
-              setLabel('');
-              setDue('');
-            }}
-          >
-            Limpar filtros
-          </button>
-        </div>
-      )}
-      {columns.length === 0 && (
-        <Empty title="Tudo começa com uma coluna">
-          Crie etapas como “Ideias”, “Em andamento” e “Concluído”. Depois, adicione seus cartões.
-        </Empty>
-      )}
-      <div className="kanban" aria-label="Colunas do quadro">
-        {columns.map((column, index) => {
-          const list = visible.filter((c) => c.columnId === column.id);
-          return (
-            <section
-              key={column.id}
-              className={'column ' + (over === column.id ? 'drop-target' : '')}
-              aria-label={column.title}
-              onDragOver={(e) => {
-                if (drag) {
-                  e.preventDefault();
-                  e.dataTransfer.dropEffect = 'move';
-                  setOver(column.id);
-                }
-              }}
-              onDrop={(e) => {
-                e.preventDefault();
-                void drop(column.id, null);
-              }}
-            >
-              <div className="column-header">
-                {rename?.id === column.id ? (
-                  <form
-                    onSubmit={async (e) => {
-                      e.preventDefault();
-                      if (
-                        rename.title.trim() &&
-                        (await dispatch({
-                          type: 'column.update',
-                          id: column.id,
-                          title: rename.title,
-                        }))
-                      )
-                        setRename(null);
-                    }}
-                  >
-                    <input
-                      autoFocus
-                      aria-label="Novo nome da coluna"
-                      value={rename.title}
-                      maxLength={200}
-                      onChange={(e) => setRename({ ...rename, title: e.target.value })}
-                    />
-                    <button className="text-button">Salvar nome</button>
-                    <button type="button" className="text-button" onClick={() => setRename(null)}>
-                      Cancelar
-                    </button>
-                  </form>
-                ) : (
-                  <>
-                    <h2>
-                      <span className={'column-dot dot-' + (index % 4)} />
-                      {column.title}
-                      <span className="count">{list.length}</span>
-                    </h2>
-                    <button
-                      className="icon-button"
-                      aria-label={'Opções da coluna ' + column.title}
-                      aria-expanded={menu === column.id}
-                      onClick={() => setMenu(menu === column.id ? null : column.id)}
-                    >
-                      <MoreHorizontal size={19} />
-                    </button>
-                  </>
-                )}
-              </div>
-              {menu === column.id && (
-                <div className="column-menu">
-                  <button
-                    onClick={() => {
-                      setRename({ id: column.id, title: column.title });
-                      setMenu(null);
-                    }}
-                  >
-                    Renomear
-                  </button>
-                  <button
-                    disabled={index === 0}
-                    onClick={() => {
-                      void dispatch({ type: 'column.move', id: column.id, offset: -1 });
-                      setMenu(null);
-                    }}
-                  >
-                    <ArrowLeft size={14} />
-                    Mover à esquerda
-                  </button>
-                  <button
-                    disabled={index === columns.length - 1}
-                    onClick={() => {
-                      void dispatch({ type: 'column.move', id: column.id, offset: 1 });
-                      setMenu(null);
-                    }}
-                  >
-                    <ArrowRight size={14} />
-                    Mover à direita
-                  </button>
-                  <button
-                    className="danger-text"
-                    onClick={() => {
-                      setMenu(null);
-                      deleteColumn(column.id);
-                    }}
-                  >
-                    Excluir coluna…
-                  </button>
-                </div>
-              )}
-              <div className="card-list">
-                {list.map((card) => {
-                  const selectedLabels = labels.filter((l) => card.labelIds.includes(l.id)),
-                    checked = card.checklist.filter((i) => i.done).length,
-                    status = dueStatus(card);
-                  return (
-                    <article
-                      key={card.id}
-                      className={
-                        'card ' +
-                        (drag === card.id ? 'dragging' : '') +
-                        (card.completed ? ' is-complete' : '') +
-                        (over === card.id ? ' drop-before' : '')
-                      }
-                      draggable
-                      onDragStart={(e) => {
-                        e.dataTransfer.setData('text/plain', card.id);
-                        e.dataTransfer.effectAllowed = 'move';
-                        setDrag(card.id);
-                      }}
-                      onDragEnd={() => {
-                        setDrag(null);
-                        setOver(null);
-                      }}
-                      onDragOver={(e) => {
-                        if (drag && drag !== card.id) {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setOver(card.id);
-                        }
-                      }}
-                      onDrop={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        void drop(column.id, card.id);
-                      }}
-                    >
-                      <button
-                        className="card-open"
-                        aria-label={'Abrir cartão ' + card.title}
-                        onClick={() => openCard(card.id)}
-                      >
-                        {selectedLabels.length > 0 && (
-                          <div className="labels">
-                            {selectedLabels.map((l) => (
-                              <span
-                                className="label-chip"
-                                key={l.id}
-                                style={{ '--label-color': l.color } as React.CSSProperties}
-                              >
-                                <i />
-                                {l.title}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                        <h3>
-                          {card.completed && <Check size={15} />} {card.title}
-                        </h3>
-                        {card.description && <p className="card-excerpt">{card.description}</p>}
-                        {(card.due || card.checklist.length > 0 || card.description) && (
-                          <div className="card-meta">
-                            {card.due && (
-                              <span className={'due ' + status}>
-                                <CalendarDays size={13} />
-                                {new Date(card.due + 'T12:00:00').toLocaleDateString('pt-BR', {
-                                  day: '2-digit',
-                                  month: 'short',
-                                })}
-                                {status === 'overdue' ? ' · atrasado' : ''}
-                                {status === 'done' ? ' · concluído' : ''}
-                              </span>
-                            )}
-                            {card.checklist.length > 0 && (
-                              <span
-                                className={checked === card.checklist.length ? 'check-done' : ''}
-                              >
-                                <ListChecks size={14} />
-                                {checked}/{card.checklist.length}
-                              </span>
-                            )}
-                            {card.description && <AlignLeft size={14} aria-label="Com descrição" />}
-                          </div>
-                        )}
-                      </button>
-                      <span className="drag-grip" aria-hidden="true">
-                        <GripVertical size={14} />
-                      </span>
-                    </article>
-                  );
-                })}
-                {list.length === 0 && (
-                  <div className="column-empty">
-                    {filtered
-                      ? 'Nenhum cartão neste filtro.'
-                      : drag
-                        ? 'Solte o cartão aqui'
-                        : 'Espaço para o próximo passo.'}
-                  </div>
-                )}
-              </div>
-              <QuickAdd
-                placeholder="Título do cartão"
-                buttonLabel="Adicionar cartão"
-                onAdd={(title) => dispatch({ type: 'card.create', columnId: column.id, title })}
+      {tabs}
+      {visual || (
+        <>
+          <div className="toolbar">
+            <label className="search">
+              <Search size={18} />
+              <input
+                aria-label="Pesquisar cartões"
+                placeholder="Pesquisar neste quadro..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
-            </section>
-          );
-        })}
-        <div className="new-column">
-          <QuickAdd
-            placeholder="Nome da coluna"
-            buttonLabel="Adicionar coluna"
-            onAdd={(title) => dispatch({ type: 'column.create', boardId: board.id, title })}
-          />
-        </div>
-      </div>
-      <footer className="board-footer">
-        <span className="status-dot" />
-        Um espaço tranquilo para fazer acontecer.
-        <span>Arraste os cartões ou mova pelo painel de detalhes.</span>
-      </footer>
+              {search && (
+                <button
+                  className="icon-button"
+                  aria-label="Limpar pesquisa"
+                  onClick={() => setSearch('')}
+                >
+                  <X size={15} />
+                </button>
+              )}
+            </label>
+            <div className="filters">
+              <select
+                aria-label="Filtrar por etiqueta"
+                value={label}
+                onChange={(e) => setLabel(e.target.value)}
+              >
+                <option value="">Todas as etiquetas</option>
+                {labels.map((l) => (
+                  <option key={l.id} value={l.id}>
+                    {l.title}
+                  </option>
+                ))}
+              </select>
+              <select
+                aria-label="Filtrar por prazo"
+                value={due}
+                onChange={(e) => setDue(e.target.value)}
+              >
+                <option value="">Todos os prazos</option>
+                <option value="overdue">Atrasados</option>
+                <option value="soon">Próximos 7 dias</option>
+                <option value="later">Depois de 7 dias</option>
+                <option value="none">Sem prazo</option>
+                <option value="done">Concluídos</option>
+                <option value="open">Não concluídos</option>
+              </select>
+              <button className="soft-button" onClick={openLabels}>
+                <Tags size={16} />
+                Etiquetas
+              </button>
+            </div>
+          </div>
+          {filtered && (
+            <div className="filter-summary">
+              {visible.length} {visible.length === 1 ? 'cartão encontrado' : 'cartões encontrados'}
+              <button
+                className="text-button"
+                onClick={() => {
+                  setSearch('');
+                  setLabel('');
+                  setDue('');
+                }}
+              >
+                Limpar filtros
+              </button>
+            </div>
+          )}
+          {columns.length === 0 && (
+            <Empty title="Tudo começa com uma coluna">
+              Crie etapas como “Ideias”, “Em andamento” e “Concluído”. Depois, adicione seus
+              cartões.
+            </Empty>
+          )}
+          <div className="kanban" aria-label="Colunas do quadro">
+            {columns.map((column, index) => {
+              const list = visible.filter((c) => c.columnId === column.id);
+              return (
+                <section
+                  key={column.id}
+                  className={'column ' + (over === column.id ? 'drop-target' : '')}
+                  aria-label={column.title}
+                  onDragOver={(e) => {
+                    if (drag) {
+                      e.preventDefault();
+                      e.dataTransfer.dropEffect = 'move';
+                      setOver(column.id);
+                    }
+                  }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    void drop(column.id, null);
+                  }}
+                >
+                  <div className="column-header">
+                    {rename?.id === column.id ? (
+                      <form
+                        onSubmit={async (e) => {
+                          e.preventDefault();
+                          if (
+                            rename.title.trim() &&
+                            (await dispatch({
+                              type: 'column.update',
+                              id: column.id,
+                              title: rename.title,
+                            }))
+                          )
+                            setRename(null);
+                        }}
+                      >
+                        <input
+                          autoFocus
+                          aria-label="Novo nome da coluna"
+                          value={rename.title}
+                          maxLength={200}
+                          onChange={(e) => setRename({ ...rename, title: e.target.value })}
+                        />
+                        <button className="text-button">Salvar nome</button>
+                        <button
+                          type="button"
+                          className="text-button"
+                          onClick={() => setRename(null)}
+                        >
+                          Cancelar
+                        </button>
+                      </form>
+                    ) : (
+                      <>
+                        <h2>
+                          <span className={'column-dot dot-' + (index % 4)} />
+                          {column.title}
+                          <span className="count">{list.length}</span>
+                        </h2>
+                        <button
+                          className="icon-button"
+                          aria-label={'Opções da coluna ' + column.title}
+                          aria-expanded={menu === column.id}
+                          onClick={() => setMenu(menu === column.id ? null : column.id)}
+                        >
+                          <MoreHorizontal size={19} />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                  {menu === column.id && (
+                    <div className="column-menu">
+                      <button
+                        onClick={() => {
+                          setRename({ id: column.id, title: column.title });
+                          setMenu(null);
+                        }}
+                      >
+                        Renomear
+                      </button>
+                      <button
+                        disabled={index === 0}
+                        onClick={() => {
+                          void dispatch({ type: 'column.move', id: column.id, offset: -1 });
+                          setMenu(null);
+                        }}
+                      >
+                        <ArrowLeft size={14} />
+                        Mover à esquerda
+                      </button>
+                      <button
+                        disabled={index === columns.length - 1}
+                        onClick={() => {
+                          void dispatch({ type: 'column.move', id: column.id, offset: 1 });
+                          setMenu(null);
+                        }}
+                      >
+                        <ArrowRight size={14} />
+                        Mover à direita
+                      </button>
+                      <button
+                        className="danger-text"
+                        onClick={() => {
+                          setMenu(null);
+                          deleteColumn(column.id);
+                        }}
+                      >
+                        Excluir coluna…
+                      </button>
+                    </div>
+                  )}
+                  <div className="card-list">
+                    {list.map((card) => {
+                      const selectedLabels = labels.filter((l) => card.labelIds.includes(l.id)),
+                        checked = card.checklist.filter((i) => i.done).length,
+                        status = dueStatus(card);
+                      return (
+                        <article
+                          key={card.id}
+                          className={
+                            'card ' +
+                            (drag === card.id ? 'dragging' : '') +
+                            (card.completed ? ' is-complete' : '') +
+                            (over === card.id ? ' drop-before' : '')
+                          }
+                          draggable
+                          onDragStart={(e) => {
+                            e.dataTransfer.setData('text/plain', card.id);
+                            e.dataTransfer.effectAllowed = 'move';
+                            setDrag(card.id);
+                          }}
+                          onDragEnd={() => {
+                            setDrag(null);
+                            setOver(null);
+                          }}
+                          onDragOver={(e) => {
+                            if (drag && drag !== card.id) {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setOver(card.id);
+                            }
+                          }}
+                          onDrop={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            void drop(column.id, card.id);
+                          }}
+                        >
+                          <button
+                            className="card-open"
+                            aria-label={'Abrir cartão ' + card.title}
+                            onClick={() => openCard(card.id)}
+                          >
+                            {selectedLabels.length > 0 && (
+                              <div className="labels">
+                                {selectedLabels.map((l) => (
+                                  <span
+                                    className="label-chip"
+                                    key={l.id}
+                                    style={{ '--label-color': l.color } as React.CSSProperties}
+                                  >
+                                    <i />
+                                    {l.title}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                            <h3>
+                              {card.completed && <Check size={15} />} {card.title}
+                            </h3>
+                            {card.description && <p className="card-excerpt">{card.description}</p>}
+                            {(card.due || card.checklist.length > 0 || card.description) && (
+                              <div className="card-meta">
+                                {card.due && (
+                                  <span className={'due ' + status}>
+                                    <CalendarDays size={13} />
+                                    {new Date(card.due + 'T12:00:00').toLocaleDateString('pt-BR', {
+                                      day: '2-digit',
+                                      month: 'short',
+                                    })}
+                                    {status === 'overdue' ? ' · atrasado' : ''}
+                                    {status === 'done' ? ' · concluído' : ''}
+                                  </span>
+                                )}
+                                {card.checklist.length > 0 && (
+                                  <span
+                                    className={
+                                      checked === card.checklist.length ? 'check-done' : ''
+                                    }
+                                  >
+                                    <ListChecks size={14} />
+                                    {checked}/{card.checklist.length}
+                                  </span>
+                                )}
+                                {card.description && (
+                                  <AlignLeft size={14} aria-label="Com descrição" />
+                                )}
+                              </div>
+                            )}
+                          </button>
+                          <span className="drag-grip" aria-hidden="true">
+                            <GripVertical size={14} />
+                          </span>
+                        </article>
+                      );
+                    })}
+                    {list.length === 0 && (
+                      <div className="column-empty">
+                        {filtered
+                          ? 'Nenhum cartão neste filtro.'
+                          : drag
+                            ? 'Solte o cartão aqui'
+                            : 'Espaço para o próximo passo.'}
+                      </div>
+                    )}
+                  </div>
+                  <QuickAdd
+                    placeholder="Título do cartão"
+                    buttonLabel="Adicionar cartão"
+                    onAdd={(title) => dispatch({ type: 'card.create', columnId: column.id, title })}
+                  />
+                </section>
+              );
+            })}
+            <div className="new-column">
+              <QuickAdd
+                placeholder="Nome da coluna"
+                buttonLabel="Adicionar coluna"
+                onAdd={(title) => dispatch({ type: 'column.create', boardId: board.id, title })}
+              />
+            </div>
+          </div>
+          <footer className="board-footer">
+            <span className="status-dot" />
+            Um espaço tranquilo para fazer acontecer.
+            <span>Arraste os cartões ou mova pelo painel de detalhes.</span>
+          </footer>
+        </>
+      )}
     </main>
   );
 }

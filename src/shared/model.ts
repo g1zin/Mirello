@@ -1,3 +1,4 @@
+import type { VisualScene, VisualAsset } from './visual';
 import { z } from 'zod';
 import { appearanceDefaults } from './appearance';
 export const idSchema = z.uuid();
@@ -196,9 +197,24 @@ export const actionSchema = z.discriminatedUnion('type', [
 ]);
 export type Action = z.infer<typeof actionSchema>;
 export type Snapshot = { state: State; revision: number };
-export type ImportPreview = { token: string; boards: number; cards: number; columns: number };
+export type ImportPreview = {
+  token: string;
+  boards: number;
+  cards: number;
+  columns: number;
+  visualBoards: number;
+  assets: number;
+  legacy: boolean;
+};
 export type Reply<T> = { ok: true; value: T } | { ok: false; error: string };
 export interface Bridge {
+  loadVisual(boardId: string): Promise<Reply<{ scene: VisualScene; assets: VisualAsset[] }>>;
+  saveVisual(scene: VisualScene): Promise<Reply<boolean>>;
+  pickImages(): Promise<Reply<{ name: string; bytes: Uint8Array }[]>>;
+  addImage(bytes: Uint8Array): Promise<Reply<VisualAsset>>;
+  clipboardImage(): Promise<Reply<{ name: string; bytes: Uint8Array } | null>>;
+  readImage(id: string): Promise<Reply<{ asset: VisualAsset; dataURL: string }>>;
+
   onVisibilityChanged(callback: (visible: boolean) => void): () => void;
   onCloseRequested(callback: () => Promise<boolean>): () => void;
   load(): Promise<Reply<Snapshot>>;

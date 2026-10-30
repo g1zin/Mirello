@@ -220,8 +220,10 @@ try {
           state: a.playState,
         }))
     );
-    assert.equal(running.length, 3);
-    assert(running.every((a) => a.region === 'brand' && a.state === 'running'));
+    assert.equal(running.length, 8);
+    assert.equal(running.filter((a) => a.region === 'brand').length, 3);
+    assert.equal(running.filter((a) => a.region === 'sidebar').length, 5);
+    assert(running.every((a) => ['brand', 'sidebar'].includes(a.region) && a.state === 'running'));
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await expect(page.locator('html')).toHaveAttribute('data-decorative-motion', 'paused');
     assert.equal(
@@ -242,7 +244,9 @@ try {
     await expect(page.locator('html')).toHaveAttribute('data-decorative-motion', 'paused');
     await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].show());
     await expect(page.locator('html')).toHaveAttribute('data-decorative-motion', 'running');
-    pass('Movimento limitado à logo; reduzir movimento, minimizar e ocultar pausam as animações');
+    pass(
+      'Movimento limitado à marca e à lateral; reduzir movimento, minimizar e ocultar pausam as animações'
+    );
     await settings();
     await dialog().getByLabel('Animações decorativas', { exact: true }).uncheck();
     await dialog().getByLabel('Intensidade da decoração', { exact: true }).focus();
@@ -267,6 +271,9 @@ try {
     for (let i = 0; i < 9; i++) {
       await page.keyboard.press('ArrowRight');
       await expect.poll(async () => (await state()).settings.decorationIntensity).toBe((i + 1) * 5);
+      await expect(dialog().getByLabel('Intensidade da decoração', { exact: true })).toHaveValue(
+        String((i + 1) * 5)
+      );
     }
     await closeSettings();
     await expect(page.locator('html')).toHaveAttribute('data-decorative-motion', 'paused');

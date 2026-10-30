@@ -115,8 +115,8 @@ export function AppearanceSettings({
           Animações decorativas
         </label>
         <p className="muted small-text">
-          Apenas algumas pétalas junto à marca se movem. A preferência de reduzir movimentos do
-          computador sempre é respeitada.
+          Poucas pétalas se movem lentamente junto à marca e pela barra lateral. A preferência de
+          reduzir movimentos do computador sempre é respeitada.
         </p>
       </fieldset>
       {cherry && (

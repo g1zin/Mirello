@@ -1,3 +1,177 @@
+# Importação do Grello 1.2.0: tarefas, quadros visuais e imagens
+
+O formato JSON **versão 2** recebido para o planejamento do Catower Defense continua aceito. `grello-exemplo.json` permanece exatamente como foi exportado pelo Grello 1.1.1 e é usado como regressão automatizada. Ao importar esse arquivo, as tarefas, checklists, datas, ordem e preferências são preservados; os quadros importados recebem quadros visuais vazios. Em Mesclar, as preferências do destino continuam prevalecendo.
+
+Para pedir apenas o planejamento das tarefas ao ChatGPT, continue usando a versão 2 e o exemplo antigo. Não é necessário acrescentar campos do editor visual a esse planejamento.
+
+## Novos exemplos fictícios
+
+- **grello-exemplo-visual.json:** documento versão 3, sem imagens externas, com um quadro visual, nota, conector e referência a um cartão. Pode ser importado sozinho.
+- **grello-exemplo-visual.grello:** pacote completo exportado pelo aplicativo com quadro visual, cartão vinculado e imagens locais. Pode ser importado por Mesclar ou Substituir. É um exemplo fictício, não um planejamento aprovado do Catower Defense.
+
+Os exemplos foram preparados em perfis isolados pela integração real do editor e pelo exportador do aplicativo. Os caminhos nos diálogos nativos foram simulados apenas para automatizar a escolha dos arquivos. O novo JSON foi extraído de `data.json` de um pacote sem imagens exportado pelo Grello.
+
+## Escolher o formato
+
+| Arquivo | Conteúdo | Importação |
+| --- | --- | --- |
+| JSON versão 1 ou 2 | Tarefas e preferências, sem cenas/imagens. | Aceito; cria cenas vazias. |
+| JSON versão 3, com `assets: []` | Tarefas, preferências e cenas sem imagens externas. | Aceito sozinho. |
+| JSON versão 3 com recursos | Declara as imagens, mas não transporta seus bytes. | Importar o pacote completo; JSON isolado é recusado. |
+| `.grello` | Manifesto 1 + `data.json` versão 3 + imagens. | Formato de exportação completo recomendado. |
+| Pasta `.grello-backup` | Cópia SQLite + imagens + manifesto de integridade. | Restauração manual com o aplicativo fechado; não é um ZIP de importação. |
+
+A versão do aplicativo é **1.2.0**, o esquema SQLite é **4**, o documento completo é **JSON 3** e o manifesto do pacote é **1**. São versões independentes.
+
+## Documento JSON versão 3
+
+O objeto raiz tem exatamente estas propriedades, todas obrigatórias:
+
+| Campo | Tipo e regra |
+| --- | --- |
+| `format` | Literal `"grello"`. |
+| `version` | Número inteiro `3`. |
+| `exportedAt` | Data/hora ISO UTC com segundos e `Z`; fração opcional. O exportador gera `YYYY-MM-DDTHH:mm:ss.sssZ`. |
+| `data` | O mesmo estado de tarefas do formato 2: `boards`, `columns`, `cards`, `labels`, `settings`. Campos e limites estão na referência legada abaixo. |
+| `visuals` | Array de cenas, até 1.000 e no máximo uma por quadro. Pode ser `[]`. Quadros sem registro usam cena vazia. |
+| `assets` | Array de metadados de recursos, até 500, sem bytes/base64. Sem imagens é `[]`. |
+
+Não acrescente HTML, URLs de imagens remotas, campos de plugins, scripts ou conteúdo ativo. Objetos são estritos: propriedades desconhecidas são rejeitadas. A validação exata está em `src/shared/visual.ts`; o exemplo contém elementos reais da versão de Excalidraw fixada pelo aplicativo.
+
+### Cenas — `visuals[]`
+
+| Campo | Tipo e regra |
+| --- | --- |
+| `boardId` | UUID de um quadro em `data.boards`. Não pode se repetir entre cenas. |
+| `version` | Número literal `1`, a versão do documento da cena. |
+| `elements` | Array em ordem de camadas, de trás para frente, com até 10.000 elementos. |
+| `view` | Objeto estrito `{ "scrollX": 0, "scrollY": 0, "zoom": 1 }`. Coordenadas finitas entre -10.000.000 e 10.000.000; zoom entre 0,1 e 30, inclusive. |
+
+Uma cena vazia pode ser representada por `elements: []`, `view: {scrollX: 0, scrollY: 0, zoom: 1}`. O importador também usa essa configuração para quadros de JSONs antigos. A cena inteira tem limite de 12 MiB de JSON UTF-8 e 250.000 pontos de desenho.
+
+### Elementos
+
+Os elementos seguem o formato persistente do Excalidraw **0.18.1**, com uma lista permitida no Grello: `rectangle`, `ellipse`, `diamond`, `text`, `line`, `arrow`, `freedraw` e `image`. Não são aceitos `iframe`, `embeddable`, frames ou elementos de geração de HTML.
+
+Campos comuns obrigatórios:
+
+- `id`: string de 1–128 caracteres, somente letras ASCII, números, `_` e `-`; UUID também é válido. Único **dentro da cena**. Não precisa ser UUID como os registros de tarefas.
+- `type`: um dos tipos permitidos acima.
+- `x`, `y`: coordenadas finitas entre -10.000.000 e 10.000.000.
+- `width`, `height`: números finitos de 0 a 1.000.000; `angle`: número finito em radianos.
+- `strokeColor`, `backgroundColor`: `"transparent"` ou hexadecimal com `#` e 3–8 dígitos; use cores padrão de seis dígitos nos arquivos gerados.
+- `fillStyle`: `"hachure"`, `"cross-hatch"`, `"solid"` ou `"zigzag"`.
+- `strokeWidth`: número de 0 a 100; `strokeStyle`: `"solid"`, `"dashed"` ou `"dotted"`; `roughness`: número de 0 a 5; `opacity`: número de 0 a 100.
+- `seed`, `versionNonce`: inteiros; `version`: inteiro maior ou igual a 1; `updated`: número finito, normalmente milissegundos desde Unix epoch.
+- `isDeleted`, `locked`: booleanos. Elementos excluídos podem permanecer com `isDeleted: true`; seus recursos são preservados.
+- `groupIds`: array de até 100 IDs de grupo; grupos não são tarefas. `frameId` deve ser `null`.
+- `roundness`: `null` ou objeto `{type: inteiro, value?: número finito}`.
+- `boundElements`: `null` ou array de até 10.000 objetos `{id, type}`, com `type: "text"` ou `"arrow"`, referenciando elementos da mesma cena.
+- `link`: `null` ou `"grello-card:" + UUID`, acompanhado do mesmo ID em `customData.grelloCardId`. Links externos não são aceitos.
+
+Campos comuns opcionais:
+
+- `index`: string de até 128 caracteres ou `null`; é o índice fracionário interno do editor. Ao gerar manualmente, use `null` e mantenha o array na ordem desejada; o editor normaliza os índices.
+- `customData`: objeto estrito com `grelloKind?: "note" | "card"` e `grelloCardId?: UUID`. Não coloque dados arbitrários aqui.
+
+Campos específicos, presentes conforme o tipo:
+
+| Tipo | Campos |
+| --- | --- |
+| `text` | `text` e `fontSize` obrigatórios; `containerId` obrigatório, ID do contêiner da mesma cena ou `null`. `text`/`originalText` até 50.000 unidades UTF-16; `fontSize` 1–1.000; `fontFamily` inteiro 1–9; `textAlign` left/center/right; `verticalAlign` top/middle/bottom; `autoResize` booleano; `lineHeight` 0,1–10. Os campos restantes são opcionais no schema, mas devem acompanhar o exemplo do editor. |
+| `line`, `arrow` | `points` obrigatório, até 50.000 pares `[x,y]` finitos com os limites de coordenada. `lastCommittedPoint`: par ou `null`; `startBinding`/`endBinding`: objeto de vínculo ou `null`; `startArrowhead`/`endArrowhead`: tipo de ponta ou `null`. Os campos além de `points` são opcionais. |
+| `freedraw` | `points` obrigatório; `pressures` opcional, até 50.000 números de 0 a 1; `simulatePressure` opcional booleano; `lastCommittedPoint` par ou `null`, opcional. |
+| `image` | `fileId` obrigatório e não nulo, UUID de um recurso em `assets`. `status`: pending/saved/error, opcional; use saved para imagem disponível. `scale`: par de números finitos, normalmente `[1,1]`, opcional. `crop`: objeto com x/y/width/height/naturalWidth/naturalHeight finitos, ou `null`, opcional. |
+
+`originalText`, `fontFamily`, alinhamentos e os demais campos de texto seguem os tipos indicados, mesmo quando opcionais. Prefira copiar os elementos reais do exemplo e alterar apenas o necessário, preservando campos e referências consistentes.
+
+Vínculos de conexões têm formato `{elementId, focus, gap, fixedPoint?}`: `elementId` aponta para um elemento da mesma cena, `focus` e `gap` são números finitos; `fixedPoint`, quando presente, é um par finito ou `null`. Tipos de ponta aceitos: arrow, bar, dot, circle, circle_outline, triangle, triangle_outline, diamond, diamond_outline, crowfoot_one, crowfoot_many e crowfoot_one_or_many.
+
+Setas também podem conter `elbowed` booleano, `fixedSegments` (array de até 10.000 objetos `{index: inteiro, start: par, end: par}` ou `null`), `startIsSpecial` e `endIsSpecial` (booleano ou `null`). São campos opcionais do editor; não são necessários para uma conexão simples.
+
+### Referências a cartões
+
+Uma referência é um contêiner retangular, normalmente com texto vinculado, que inclui:
+
+```json
+{
+  "customData": {
+    "grelloKind": "card",
+    "grelloCardId": "UUID-DO-CARTAO-ORIGINAL"
+  },
+  "link": "grello-card:UUID-DO-CARTAO-ORIGINAL"
+}
+```
+
+Esse trecho é apenas a parte de integração; o elemento também precisa dos campos comuns. O ID do cartão deve apontar para uma tarefa do mesmo quadro. O texto associado usa `containerId` para o retângulo; `boundElements` do retângulo referencia seu texto. Conexões podem se ligar ao contêiner.
+
+Não crie uma segunda tarefa para representar o vínculo. O aplicativo atualiza título, coluna, conclusão e arquivamento a partir do cartão original. Um UUID ausente é permitido para representar um cartão excluído: o editor mostra **Cartão indisponível**, em vez de quebrar a cena. Um cartão existente de outro quadro é recusado.
+
+### Recursos — `assets[]`
+
+Cada objeto contém exatamente:
+
+| Campo | Regra |
+| --- | --- |
+| `id` | UUID único entre recursos, sem reutilizar ID de tarefa/quadro/coluna/etiqueta/checklist. |
+| `mime` | image/png, image/jpeg ou image/webp no schema de metadados. O exportador atual normaliza e grava **PNG**; para preparar um pacote externamente, use PNG. |
+| `bytes` | Inteiro positivo, até 20 MiB, igual ao tamanho real do arquivo. |
+| `width`, `height` | Inteiros positivos até 8.192, com produto até 24.000.000. |
+| `sha256` | String com exatamente 64 dígitos hexadecimais minúsculos, correspondente aos bytes. |
+
+O registro não contém `path`, `dataURL`, base64 ou caminho original. O arquivo é encontrado pelo ID e tipo: `assets/UUID.png` para PNG; a implementação reconhece extensões jpg/webp para os demais metadados, mas valida a decodificação antes de aceitar o pacote. A forma canônica desta versão é PNG.
+
+Imagens de origem são copiadas/conver­tidas antes de serem usadas. Mover ou apagar o arquivo original não quebra o quadro. Os data URLs usados pelo editor existem apenas na memória durante a renderização, não no estado principal ou nos documentos persistidos.
+
+## Como transportar imagens no pacote completo
+
+Um `.grello` é um arquivo ZIP comum, com **somente**:
+
+```text
+manifest.json
+ data.json
+assets/UUID.png
+assets/OUTRO-UUID.png
+```
+
+Não coloque pastas explícitas, caminhos absolutos, `..`, arquivos ocultos, previews, fontes, SVGs, scripts ou bancos dentro desse pacote. `data.json` é o documento versão 3; as fontes e os temas pertencem ao aplicativo e não precisam viajar no pacote.
+
+O manifesto é um objeto estrito:
+
+```json
+{
+  "format": "grello-package",
+  "version": 1,
+  "files": [
+    {"path": "data.json", "bytes": 1234, "sha256": "64-digitos-hexadecimais-minusculos"},
+    {"path": "assets/UUID.png", "bytes": 5678, "sha256": "64-digitos-hexadecimais-minusculos"}
+  ]
+}
+```
+
+Os valores acima são ilustrativos: use tamanhos/hashes reais. `files` lista `data.json` e **todos** os recursos declarados, uma vez cada; não lista o próprio manifesto. O manifesto tem limite de 256 KiB, e `files` até 501 entradas. Recursos retidos para desfazer/refazer podem existir mesmo quando a imagem está excluída da cena.
+
+O importador aceita ZIP com métodos stored/deflate, sem criptografia, ZIP64 ou data descriptors, e com nomes UTF-8/ASCII correspondentes nos cabeçalhos locais e no diretório central. Valida antes e durante a descompactação, sem extrair nomes arbitrários para o disco. Rejeita nomes repetidos, entradas inesperadas, tamanhos inconsistentes, hashes diferentes, referências quebradas e conteúdo excessivo.
+
+Limites: **100 MiB comprimidos**, **250 MiB descompactados**, no máximo **502 arquivos** contando manifesto e dados, `data.json` até **25 MiB**, imagem até **20 MiB**. Os limites de tarefas do formato 2 continuam valendo também no estado resultante da mesclagem.
+
+Para o ChatGPT produzir o planejamento, JSON 2 continua sendo a opção simples. Para transportar imagens reais, use a exportação do próprio Grello; renomear um JSON como `.grello` não cria um pacote válido.
+
+## Mesclar, Substituir e backups
+
+**Mesclar** conserva os registros e as preferências do destino. Acrescenta cópias, com novos UUIDs para tarefas, checklists e recursos, e novos IDs para elementos e grupos visuais. Remapeia `boardId`, `columnId`, `labelIds`, `containerId`, `boundElements`, vínculos das setas, `fileId`, `grelloCardId` e `link`. As referências apontam para os cartões importados correspondentes. A referência a um cartão já excluído continua indisponível, sem se associar por engano a uma tarefa do destino. A ordem relativa e o viewport são preservados. Reimportar cria cópias adicionais; não sincroniza registros existentes.
+
+**Substituir** valida todos os dados e imagens, cria backup completo e só então grava a substituição em transação. Uma falha de backup interrompe a operação. Imagens existentes não são sobrescritas nem apagadas; arquivos órfãos de uma falha de gravação também não substituem dados ativos. O aplicativo não remove automaticamente recursos potencialmente necessários a histórico ou backups.
+
+Backups atuais são pastas `.grello-backup` com `grello.sqlite`, `assets` e `manifest.json`, que identifica `format: "grello-backup"`, `version: 1`, banco e arquivos com tamanhos/hashes. São publicados como completos somente após terminar a cópia; `.incomplete` indica uma tentativa não finalizada. A restauração manual e os cuidados com WAL/SHM estão no README. Um `.sqlite` isolado antigo não transporta imagens.
+
+## Fontes de validação e regressões
+
+Consulte `src/shared/model.ts`, `src/shared/visual.ts`, `src/domain/visualMerge.ts`, `src/data/package.ts`, `src/data/database.ts` e `src/main/visualIpc.ts`. Os testes usam os mesmos validadores e operações do importador: JSON legado com cenas vazias, persistência, referência indisponível, mesclagem de imagens/conexões, recuperação de backup e recusa de pacotes inválidos. Resultados realmente executados constam de `docs/VALIDACAO-1.2.0.md`.
+
+A referência a seguir descreve os campos de tarefas e o comportamento legado do Grello 1.1.1. As observações históricas sobre exportação JSON/backup SQLite aplicam-se àquela versão; no Grello 1.2.0, o exportador e o backup completo são os descritos acima. Os campos de `data` continuam válidos no documento 3.
+
+---
 # Formato de importação do Grello 1.1.1
 
 Referência para gerar o planejamento do Catower Defense como JSON e importá-lo pela opção **Mesclar**. Anexe este documento e `grello-exemplo.json` ao ChatGPT. O exemplo contém apenas dados fictícios; seus prazos não são compromissos reais nem constituem o planejamento final.

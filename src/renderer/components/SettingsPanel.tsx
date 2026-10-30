@@ -76,8 +76,8 @@ export function SettingsPanel({
           Seus dados, com você
         </h3>
         <p className="muted">
-          Seus quadros são salvos automaticamente neste computador. Guarde uma exportação em outro
-          local para ter uma cópia extra.
+          Seus quadros, desenhos e imagens são salvos automaticamente neste computador. O pacote
+          .grello inclui as imagens. Guarde uma exportação em outro local para ter uma cópia extra.
         </p>
         <div className="settings-buttons">
           <button
@@ -88,7 +88,7 @@ export function SettingsPanel({
             }
           >
             <Download size={17} />
-            Exportar dados
+            Exportar pacote completo
           </button>
           <button
             className="soft-button"
@@ -142,7 +142,8 @@ export function SettingsPanel({
         </p>
         <p className="muted small-text">
           Para restaurar um backup: feche o Grello, guarde uma cópia da pasta de dados e substitua
-          grello.sqlite pelo arquivo de backup. Veja o passo a passo no README do projeto.
+          grello.sqlite e a pasta assets pelas cópias contidas na pasta .grello-backup. Backups
+          antigos .sqlite restauram somente os dados anteriores ao quadro visual. Veja o README.
         </p>
       </section>
       <section className="settings-section">
@@ -172,7 +173,7 @@ export function SettingsPanel({
         </p>
       )}
       <div className="about">
-        Grello · versão 1.1.1
+        Grello · versão 1.2.0
         <br />
         Feito para organizar o seu cotidiano.
       </div>

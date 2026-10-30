@@ -1,10 +1,11 @@
+import { unzipSync, strFromU8 } from 'fflate';
 import { _electron as electron, expect } from '@playwright/test';
 import { mkdtemp, mkdir, writeFile, readFile, readdir } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import assert from 'node:assert/strict';
 const data = await mkdtemp(join(tmpdir(), 'grello-e2e-')),
-  exportPath = join(data, 'export.json'),
+  exportPath = join(data, 'export.grello'),
   invalidPath = join(data, 'invalid.json');
 await mkdir('test-results', { recursive: true });
 await writeFile(invalidPath, '{"format":"grello","version":999}');
@@ -224,9 +225,9 @@ try {
   await app.evaluate(({ dialog }, path) => {
     dialog.showSaveDialog = async () => ({ canceled: false, filePath: path });
   }, exportPath);
-  await button('Exportar dados').click();
+  await button('Exportar pacote completo').click();
   await p.getByText('Exportação salva com sucesso.', { exact: true }).waitFor();
-  const exported = JSON.parse(await readFile(exportPath, 'utf8'));
+  const exported = JSON.parse(strFromU8(unzipSync(await readFile(exportPath))['data.json']));
   assert.deepEqual(exported.data, await db());
   await importFile(invalidPath);
   await expect(p.getByRole('alert').first()).toContainText('Dados inválidos');

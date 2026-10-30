@@ -1,162 +1,138 @@
 # Grello
 
-Organização pessoal em quadros Kanban, no seu computador. O **Grello 1.1.1** é um aplicativo desktop para Windows x64, em português do Brasil, com dados locais e funcionamento offline.
+Organização pessoal em um aplicativo desktop para Windows x64, com tarefas Kanban e um quadro visual para conectar referências e ideias. Funciona localmente e offline: sem conta, assinatura, colaboração, sincronização ou IA integrada.
 
-**[Baixar a versão 1.1.1](https://github.com/g1zin/grello/releases/tag/v1.1.1)** · [Licença MIT](LICENSE) · [Créditos e licenças](CREDITS.md)
+**Versão 1.2.0 em avaliação local.** Esta versão acrescenta Quadro visual e pétalas na lateral de Céu e Cerejeiras. Ainda não foi publicada no GitHub. A versão pública aprovada permanece [Grello 1.1.1](https://github.com/g1zin/grello/releases/tag/v1.1.1), que contém o Kanban e os temas anteriores.
 
-## O que você pode fazer
+## Recursos
 
-- Criar, renomear, ordenar e arquivar quadros.
-- Organizar colunas e cartões; arrastar cartões ou movê-los pelo painel de detalhes.
-- Editar descrição, etiquetas coloridas, prazo e checklist; duplicar, concluir, arquivar e restaurar cartões.
-- Pesquisar por título/descrição e filtrar por etiqueta ou situação do prazo.
-- Escolher modos claro/escuro e personalizar a aparência.
-- Exportar/importar seus dados e criar backups locais.
+- Quadros, colunas e cartões com ordem persistente, arraste e opção de mover pelo menu.
+- Descrições, etiquetas por quadro, prazos, conclusão e checklists.
+- Pesquisa, filtros, arquivamento e restauração; confirmação de exclusões permanentes.
+- Abas **Tarefas** e **Quadro visual** no mesmo projeto.
+- Imagens por seleção de arquivo, arraste e colagem; notas coloridas, textos, formas, desenho, linhas e setas com vínculos.
+- Zoom, navegação, seleção múltipla, camadas, duplicação, exclusão e desfazer/refazer no editor.
+- Referências aos cartões originais, com título, coluna, conclusão, arquivamento e ação para abrir seus detalhes.
+- Estilos **Original** e **Céu e Cerejeiras**, modos claro/escuro/Sistema, intensidade e animações opcionais. Pétalas usam CSS e respeitam redução de movimentos e visibilidade da janela.
+- Salvamento automático, pacotes completos com imagens e backups recuperáveis antes de migrações e substituições.
 
-As alterações são salvas automaticamente em SQLite. Não há login, conta, assinatura, sincronização, colaboração ou serviço de IA dentro do aplicativo.
+A interface principal mantém sua tipografia e os temas existentes. O editor usa [Excalidraw 0.18.1](https://docs.excalidraw.com/docs/@excalidraw/excalidraw/installation), sob licença MIT, sem chave ou serviço obrigatório. Todos os recursos necessários, inclusive fontes, são empacotados localmente. Embeds, recursos remotos e colaboração não estão habilitados.
 
-## Aparência da versão aprovada
+## Instalar e abrir
 
-As capturas abaixo usam **dados fictícios gerados pelos testes**, sem dados pessoais.
+Na entrega local, use os arquivos da pasta `release`:
 
-| Original | Céu e Cerejeiras |
-| --- | --- |
-| ![Original claro](docs/screenshots/original-light.png) | ![Céu e Cerejeiras claro](docs/screenshots/cherry-light.png) |
-| ![Original escuro](docs/screenshots/original-dark.png) | ![Céu e Cerejeiras escuro](docs/screenshots/cherry-dark.png) |
+- `Grello-Instalador-1.2.0.exe`: assistente de instalação, com opção de pasta e atalhos. Depois, abra pelo atalho criado.
+- `Grello-Portatil-1.2.0.exe`: abra diretamente, sem instalar. Pode demorar alguns segundos para extrair o runtime temporário.
+- `SHA256SUMS-1.2.0.txt`: hashes dos executáveis desta entrega.
 
-Em **Configurações → Aparência**, escolha Original ou Céu e Cerejeiras pelas miniaturas. O modo Claro/Escuro é independente do estilo; Sistema acompanha a preferência do computador.
+Os executáveis não têm assinatura digital comercial. O assistente, os atalhos e eventuais avisos do Windows precisam de conferência manual no computador de destino. Não há atualização automática.
 
-Céu e Cerejeiras combina paisagens originais de dia/noite e decoração suave. A intensidade pode ir a zero sem apagar textos ou controles. Somente pequenas pétalas junto à marca se movem; há opção de desativá-las, respeito a reduzir movimentos e pausa ao ocultar/minimizar.
+**Portátil descreve a execução do programa, não a localização dos dados.** As duas versões usam a mesma pasta de dados do Windows; mover o executável não leva os seus quadros junto. Para transportar dados e imagens, use um pacote completo.
 
-As cores personalizadas dos quadros ficam preservadas. Céu e Cerejeiras usa sua paleta nas superfícies; ao voltar ao Original, suas cores voltam a aparecer. Os marcadores laterais continuam identificando os quadros pela cor escolhida.
+Para a versão pública 1.1.1, baixe somente os arquivos na [Release oficial](https://github.com/g1zin/grello/releases/tag/v1.1.1). O quadro visual estará apenas nesta entrega local até nova aprovação.
 
-## Baixar, instalar e abrir
+## Usar tarefas e referências
 
-Na [Release Grello 1.1.1](https://github.com/g1zin/grello/releases/tag/v1.1.1), abra a seção **Assets** e escolha:
+Crie um quadro, adicione colunas e cartões na aba Tarefas. Clique no cartão para editar os detalhes. Arraste para reorganizar ou use Mover cartão. Fechar o painel aguarda o salvamento.
 
-| Arquivo | Como usar |
-| --- | --- |
-| [Grello-Instalador-1.1.1.exe](https://github.com/g1zin/grello/releases/download/v1.1.1/Grello-Instalador-1.1.1.exe) | Execute o assistente. A instalação configura atalhos na área de trabalho e no menu Iniciar. |
-| [Grello-Portatil-1.1.1.exe](https://github.com/g1zin/grello/releases/download/v1.1.1/Grello-Portatil-1.1.1.exe) | Abra diretamente, sem instalar. |
-| [SHA256SUMS.txt](https://github.com/g1zin/grello/releases/download/v1.1.1/SHA256SUMS.txt) | Hashes SHA-256 dos dois executáveis. |
+Na aba Quadro visual:
 
-Não é necessário instalar Node.js nem abrir terminal/servidor para usar os executáveis. A primeira abertura do portátil pode levar algum tempo para extrair seus arquivos.
+- **Imagem** abre a seleção de arquivos. Também é possível arrastar imagens do computador ou colá-las. PNG, JPEG e WebP são convertidos localmente para PNG gerenciado pelo Grello.
+- **Nota** cria uma nota com texto e cor. Duplo clique edita o texto; a seleção mostra controles de cor, tamanho e traço.
+- A barra de ferramentas do editor oferece texto, retângulo, elipse, desenho, linha, seta, seleção e borracha. Conecte nas bordas dos elementos para manter as ligações ao mover. Duplo clique em uma conexão permite texto de rótulo.
+- Espaço + arrastar ou a ferramenta Mão navega; os controles na barra do Grello ajustam o zoom. **Shift+1** ou Enquadrar todo o conteúdo mostra o conjunto.
+- **Ctrl+Z** desfaz, **Ctrl+Shift+Z** refaz, **Ctrl+D** duplica; Delete remove elementos selecionados. O menu de contexto permite ordenar camadas. Esses atalhos do editor não atuam sobre campos de digitação.
+- **Vincular cartão** pesquisa tarefas do mesmo quadro, inclusive arquivadas. Selecione a referência e use **Abrir cartão**, ou sua ação de vínculo, para abrir o painel existente.
 
-**Instalador e portátil usam a mesma pasta de dados do usuário.** “Portátil” descreve o executável: os quadros não ficam ao lado dele nem são transportados automaticamente em um pendrive.
+Excluir uma referência visual não exclui a tarefa. Mover a referência não muda a coluna. Arquivar o cartão mantém a indicação de arquivado. Sua exclusão permanente deixa a referência como **Cartão indisponível**. Ao fechar os detalhes, a posição e o zoom continuam iguais.
 
-Os executáveis **não possuem assinatura digital comercial**. O Windows pode mostrar editor desconhecido. Baixe os arquivos desta Release e, se desejar, confira o hash no PowerShell:
+Os fundos decorativos pertencem à interface e não são elementos do moodboard. O histórico de desfazer/refazer é da sessão do editor; reiniciar ou remontar o editor ao trocar de aba/quadro inicia um novo histórico, preservando o conteúdo salvo.
 
-```powershell
-Get-FileHash .\Grello-Instalador-1.1.1.exe -Algorithm SHA256
-Get-FileHash .\Grello-Portatil-1.1.1.exe -Algorithm SHA256
-```
+## Dados e salvamento
 
-Compare com o arquivo SHA256SUMS.txt. Os pacotes são para Windows x64; outros sistemas não têm builds validados.
-
-## Dados, exportação e backups
-
-O armazenamento fica separado do código e da instalação:
+Dados permanentes:
 
 ```text
-%APPDATA%\Grello\grello.sqlite
-%APPDATA%\Grello\backups\
+%APPDATA%\Grello\
+  grello.sqlite
+  assets\                  imagens locais imutáveis
+  backups\                 cópias completas e backups antigos
 ```
 
-Use **Configurações → Abrir pasta de dados / Abrir pasta de backups**. Atualizar ou reinstalar preserva essa pasta; o instalador está configurado para não apagar os dados na desinstalação. O aplicativo não criptografa o banco ou os backups.
+A pasta fica separada do código-fonte e da instalação. Atualizar não apaga os quadros. **Abrir pasta de dados** e **Abrir pasta de backups**, nas configurações, permitem localizá-las.
 
-- **Exportar dados** gera JSON com todos os quadros, cartões, etiquetas, checklists e preferências.
-- **Importar → Mesclar** adiciona cópias com novos identificadores e preserva seus dados/preferências atuais. Repetir a importação cria novas cópias.
-- **Importar → Substituir** troca todos os dados/preferências, pede confirmação e cria um backup antes da alteração.
-- **Criar backup agora** produz uma cópia SQLite consistente.
-- Há backup automático antes de substituir dados e antes de migrar um banco existente. Se o backup falhar, a operação é abortada.
+Tarefas são salvas em transações. O quadro visual usa uma tabela própria, com uma gravação do documento após cerca de 800 ms de pausa; mover o ponteiro não regrava o Kanban. Trocar de aba/quadro e fechar normalmente aguardam operações pendentes, inclusive imagens e texto em edição. Falhas de gravação mantêm o editor aberto, com mensagem e opção de tentar novamente.
 
-O JSON atual tem versão 2; exportações da versão 1 continuam importáveis. Arquivos inválidos, referências quebradas e versões incompatíveis são recusados antes de alterar dados. O limite de importação é 25 MB.
+Encerramento forçado, queda de energia ou matar o processo pode perder alterações ainda não enviadas ao banco. Imagens apagadas do quadro visual continuam no armazenamento para não quebrar desfazer/refazer e backups. Não há coleta automática desses arquivos nesta versão.
 
-Guarde cópias importantes em outro local: backups na mesma máquina não protegem contra perda do disco. Não há backup em nuvem ou sincronização automática.
+## Exportar, importar e fazer backup
 
-### Restaurar um backup
+Em Configurações:
 
-Para JSON, use **Importar → Substituir com backup**.
+- **Exportar pacote completo** salva `.grello`, um ZIP com manifesto versionado, tarefas, cenas visuais e imagens locais. Use esse arquivo para transportar todos os dados.
+- **Importar dados → Mesclar** acrescenta cópias com novos identificadores, remapeando cartões, elementos, conectores, grupos e imagens. Mantém as preferências visuais atuais. Importar novamente cria novas cópias.
+- **Importar dados → Substituir** troca tarefas, preferências e quadros visuais, com confirmação e backup completo anterior. Se o backup falhar, a substituição é abortada.
+- **Criar backup agora** cria uma pasta `.grello-backup` com uma cópia SQLite consistente, imagens e manifesto de integridade.
 
-Para um arquivo SQLite:
+O importador aceita os JSONs antigos das versões **1 e 2**, incluindo o exemplo de 1.1.1 usado no planejamento do Catower Defense. Eles trazem tarefas e preferências, com quadros visuais vazios. Ao mesclar, os quadros visuais já existentes no destino permanecem intactos; ao substituir por JSON antigo, as cenas são substituídas por vazias.
 
-1. Feche o Grello.
-2. Copie a pasta de dados inteira para um local seguro.
-3. Guarde o banco atual e eventuais arquivos `grello.sqlite-wal` / `grello.sqlite-shm` juntos em outra pasta.
-4. Copie o backup escolhido para a pasta de dados e renomeie a cópia para `grello.sqlite`.
-5. Reabra o Grello. Mantenha o backup original.
+Também aceita JSON versão **3 sem imagens externas**. Um JSON que declare recursos precisa do pacote completo; não é apresentado como backup completo. O exportador cotidiano passa a produzir `.grello`.
 
-Não misture arquivos WAL de bancos diferentes. Com o aplicativo aberto, use exportação/backup pelo aplicativo; não copie apenas o arquivo principal. Um banco atualizado não deve ser aberto por uma versão mais antiga incompatível.
+Limites principais: JSON 25 MiB; pacote 100 MiB comprimido e 250 MiB descompactado; até 500 recursos, 10.000 elementos por cena e 250.000 pontos de desenho por cena. Imagens de entrada: até 10 MiB, 8.192 pixels por lado e 24 milhões de pixels; o PNG normalizado pode ter até 20 MiB. Manifestos, nomes, tamanhos, hashes, formatos e referências são validados antes de gravar. Caminhos arbitrários, arquivos extras e conteúdo ativo são recusados.
 
-## Usar no dia a dia
+Veja os formatos e exemplos em [FORMATO-IMPORTACAO.md](docs/importacao/FORMATO-IMPORTACAO.md). Mantenha uma cópia importante em outro disco; não há backup em nuvem.
 
-Crie um quadro, adicione colunas e cartões. Clique no cartão para editar os detalhes. Arraste para reorganizar ou use **Mover cartão** no painel. **Concluir edição** aguarda o salvamento.
+### Restaurar
 
-Excluir uma coluna com cartões exige outra coluna do mesmo quadro como destino, incluindo cartões arquivados. Exclusões permanentes pedem confirmação. Quadros podem ser arquivados e restaurados.
+Para um pacote `.grello`, use **Importar dados → Substituir com backup**.
 
-A edição automática espera uma pequena pausa na digitação; fechar o painel ou a janela aguarda as gravações. Encerramento forçado pelo sistema pode perder o texto que ainda não foi enviado. Dados de demonstração são opcionais e ficam em um quadro separado.
+Para uma pasta `.grello-backup`:
 
-## Executar o código
+1. Feche completamente o Grello. Use uma versão compatível com o esquema do backup.
+2. Copie a pasta de dados atual inteira para outro local seguro.
+3. Confira que o backup tem `manifest.json`, `grello.sqlite` e `assets`. Não use uma pasta terminada em `.incomplete`.
+4. Guarde o banco atual, WAL/SHM e a pasta assets juntos na cópia de segurança, fora da pasta ativa.
+5. Copie `grello.sqlite` e a pasta `assets` do backup para a pasta de dados ativa. Não misture os arquivos WAL/SHM antigos com o banco restaurado.
+6. Reabra o Grello e confira tarefas e imagens. Preserve o backup original.
 
-Ferramentas verificadas: Windows x64 build 26200, Node.js 24.21.0 e npm 11.19.0. Use Node.js 24 e as dependências exatas do lockfile.
+O manifesto registra SHA-256 e tamanho dos arquivos; por exemplo, `Get-FileHash -Algorithm SHA256 caminho-do-arquivo` permite conferir um arquivo antes da cópia. Os testes de dados recuperam um backup completo em uma pasta temporária e comparam banco, cenas e bytes das imagens.
+
+Backups antigos `.sqlite`, feitos antes do quadro visual, contêm somente o banco. Para esses, feche o aplicativo, preserve a pasta atual e copie o arquivo como `grello.sqlite`, sem WAL/SHM antigos. Ao abrir na versão nova, haverá uma migração com backup anterior e cenas vazias. **Um banco já migrado não deve ser aberto no Grello 1.1.1.** Para voltar à versão anterior, restaure seu backup anterior à migração.
+
+## Código-fonte e build
+
+Ambiente: Windows x64, Node.js 24 e dependências locais fixadas no lockfile. Use `npm.cmd` para evitar o bloqueio de npm.ps1 sem alterar a política do PowerShell.
 
 ```powershell
-git clone https://github.com/g1zin/grello.git
-cd grello
 npm.cmd ci
 npm.cmd run dev
-```
-
-O comando compila e abre a janela Electron. Após editar, feche a janela e execute novamente. Downloads iniciais das ferramentas precisam de internet; o aplicativo instalado funciona offline.
-
-Usamos `npm.cmd` para evitar o bloqueio de `npm.ps1` em alguns ambientes PowerShell, sem alterar a política de execução.
-
-## Testar e gerar pacotes
-
-```powershell
-npm.cmd run format:check
 npm.cmd test
 npm.cmd run build
-npm.cmd run test:vertical
 npm.cmd run package:dir
 npm.cmd run test:e2e
 $env:GRELLO_PACKAGED='1'
+npm.cmd run test:visual
 npm.cmd run test:appearance
+npm.cmd run test:petals
 npm.cmd run package
 node tests/portable-smoke.mjs
-npm.cmd run audit:publication
 ```
 
-- `test`: persistência, importação, backup e migrações em bancos temporários.
-- `test:e2e`: fluxo básico na janela real do executável de `release/win-unpacked`.
-- `test:appearance`: estilos, modos, contraste, foco, tamanhos de janela, animações e interações. Sem GRELLO_PACKAGED=1, usa o build de desenvolvimento.
-- `package:dir`: gera o aplicativo em pasta.
-- `package`: gera instalador NSIS e portátil Windows x64 em `release`.
-- `licenses`: atualiza os avisos a partir das dependências instaladas; executado antes de empacotar.
-- `audit:publication`: verifica arquivos rastreados e blobs do histórico em busca de padrões de credenciais, bancos e caminhos privados.
+`package:dir` gera `release/win-unpacked`; `package` gera instalador NSIS e portátil. `test:visual` e `test:petals` usam o build de desenvolvimento quando `GRELLO_PACKAGED` não é `1`. O teste das pétalas observa 90 segundos por modo. `format:check` confere a formatação; `licenses` coleta avisos e roda antes do empacotamento. Os testes usam dados fictícios em pastas isoladas. Diálogos nativos e conteúdo de colagem são simulados apenas no processo de teste; não usam os quadros ou a área de transferência pessoal.
 
-Os testes usam pastas temporárias isoladas. Nunca use seus dados reais como alvo de testes. A seleção de arquivos nos diálogos nativos é simulada nos E2Es; as operações de arquivos/banco são reais.
+A primeira instalação de ferramentas exige internet; o aplicativo pronto não depende dela. O build redireciona o fallback de fontes do Excalidraw para os arquivos locais. Há bloqueio de requisições remotas, navegação e novas janelas; o renderer continua sem Node, com sandbox, contextIsolation e ponte IPC restrita.
 
-Os instaladores ficam fora do histórico Git e são distribuídos pela Release. O GitHub oferece o código-fonte da tag em ZIP/tar.gz. Não há atualização automática embutida.
+## Estrutura e verificações
 
-## Estrutura e customizações
+`src/renderer/visual` integra o editor; `src/shared/visual.ts` valida cenas e recursos; `src/data` cuida de SQLite, imagens, pacotes e migrações; `src/domain/visualMerge.ts` remapeia vínculos; `src/main` contém integrações restritas com o sistema. Temas e tokens permanecem em `src/renderer/styles`.
 
-`src/renderer` contém interface, temas e tokens; `src/domain`, as regras; `src/data`, SQLite e migrações; `src/main`, janela/IPC/integrações; `src/shared`, modelos e validação. `tests` contém verificações de dados e interface.
+Leia [AGENTS.md](AGENTS.md) antes de alterar dados. O banco usa esquema **4**, sem modificar as migrações já publicadas. O esquema JSON antigo continua testado com [grello-exemplo.json](docs/importacao/grello-exemplo.json), que permanece intacto.
 
-Leia [AGENTS.md](AGENTS.md) antes de modificar dados ou migrações. O banco usa esquema 3, UUIDs estáveis, transações e backup antes de migração. Não edite migrações já publicadas nem recrie um banco existente para corrigir um problema.
+Os resultados e capturas da entrega local ficam em [VALIDACAO-1.2.0.md](docs/VALIDACAO-1.2.0.md). A aprovação manual desta versão ainda está pendente. Não há validação completa de leitores de tela, outras escalas de DPI, instalações corporativas, encerramento forçado ou uso nos limites máximos de dados. O assistente de instalação e seus atalhos devem ser conferidos manualmente.
 
-## Verificações e limitações
+## Autoria e licenças
 
-Os resultados desta publicação estão em [docs/PUBLICACAO-1.1.1.md](docs/PUBLICACAO-1.1.1.md). Há registros anteriores em [VALIDACAO-1.1.1.md](VALIDACAO-1.1.1.md).
+Guilherme Alves conduz o projeto, as escolhas visuais e os testes manuais de aprovação da versão 1.1.1. A implementação e parte da validação automatizada têm assistência de IA/Codex. As paisagens e flores geradas para o projeto estão identificadas com sua procedência. Esta versão 1.2.0 aguarda avaliação de Guilherme.
 
-O assistente de instalação, os atalhos e a seleção manual pelos diálogos de arquivos precisam de conferência manual no computador de destino. Não há validação completa com leitores de tela, outras escalas de DPI, encerramento forçado ou volumes extremos de cartões.
-
-O Grello foi pensado para organização pessoal, sem colaboração e sem sincronização. As alterações salvam o conjunto de entidades em uma transação; volumes muito grandes podem exigir evolução no acesso ao banco.
-
-## Autoria, assistência de IA e licença
-
-**Guilherme Alves** é responsável pela direção do projeto, escolhas visuais e testes manuais de aprovação. O desenvolvimento do código, a organização e parte da automação das verificações tiveram assistência de **IA/Codex**. As paisagens e os conjuntos de flores foram gerados com **imagegen**; a procedência e os prompts estão registrados no projeto.
-
-A licença **MIT** que já existia foi preservada. Ela permite reutilização sob suas condições, incluindo a manutenção dos avisos de licença/copyright. Dependências e componentes de terceiros mantêm suas próprias licenças.
-
-Consulte [LICENSE](LICENSE), [CREDITS.md](CREDITS.md), [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) e [LICENSES](LICENSES).
+A licença MIT já existente foi preservada. Excalidraw é MIT; as fontes locais do editor mantêm seus avisos SIL OFL 1.1 ou MIT. Não redistribuímos Segoe UI. Consulte [LICENSE](LICENSE), [CREDITS.md](CREDITS.md), [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) e [LICENSES](LICENSES).

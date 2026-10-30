@@ -29,7 +29,7 @@ function fixture() {
   db.close();
   return s;
 }
-test('migração v2 → v3 preserva dados, modo e cores e cria backup anterior recuperável', () => {
+test('migração v2 → v4 preserva dados, modo e cores e cria backup anterior recuperável', () => {
   const path = dir(),
     s = fixture(),
     old = new DatabaseSync(join(path, 'grello.sqlite'));
@@ -48,11 +48,11 @@ test('migração v2 → v3 preserva dados, modo e cores e cria backup anterior r
   old.prepare('UPDATE preferences SET data=? WHERE id=1').run(JSON.stringify(oldSettings));
   old.close();
   const db = new Store(path);
-  assert.equal(SCHEMA_VERSION, 3);
+  assert.equal(SCHEMA_VERSION, 4);
   assert.deepEqual(db.read().state, { ...s, settings: { ...oldSettings, ...appearanceDefaults } });
   const backups = readdirSync(db.backups);
   assert.equal(backups.length, 1);
-  const backup = new DatabaseSync(join(db.backups, backups[0]));
+  const backup = new DatabaseSync(join(db.backups, backups[0], 'grello.sqlite'));
   assert.equal(backup.prepare('PRAGMA user_version').get()!.user_version, 2);
   assert.deepEqual(
     JSON.parse(backup.prepare('SELECT data FROM preferences').get()!.data as string),

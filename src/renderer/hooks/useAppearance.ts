@@ -32,6 +32,21 @@ export function useAppearance(settings: State['settings'] | undefined) {
         !document.hidden &&
         root.dataset.windowVisible !== 'false';
       root.dataset.decorativeMotion = animate ? 'running' : 'paused';
+      root.dataset.decorativeEffects =
+        settings.decorativeAnimations && !reduce.matches ? 'on' : 'off';
+      // Hidden Chromium windows may defer a CSS pause until their next frame.
+      // Freeze the compositor timeline once per visibility/preference event.
+      for (const animation of document.getAnimations()) {
+        const target = (animation.effect as KeyframeEffect | null)?.target;
+        if (!(target instanceof Element) || !target.closest('.visual-decoration')) continue;
+        if (animate) {
+          if (animation.playState === 'paused' || animation.pending) animation.play();
+        } else {
+          const time = animation.currentTime;
+          animation.pause();
+          if (time !== null) animation.currentTime = time;
+        }
+      }
     };
     apply();
     const unsubscribe = window.grello.onVisibilityChanged((visible) => {

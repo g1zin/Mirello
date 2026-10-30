@@ -1,3 +1,6 @@
+import { registerVisualIpc } from './visualIpc';
+import { encodePackage, decodePackage } from '../data/package';
+import { parseVisualDocument, type VisualBundle } from '../shared/visual';
 import { app, BrowserWindow, ipcMain, dialog, shell, protocol, net, Menu } from 'electron';
 import { readFile, writeFile, stat } from 'node:fs/promises';
 import { join, resolve, sep } from 'node:path';
@@ -30,7 +33,12 @@ ipcMain.on('grello:close-ready', (event, ok) => {
     win.close();
   }
 });
-let pending: { token: string; state: State; expires: number } | null = null;
+let pending: {
+  token: string;
+  state: VisualBundle;
+  files: Map<string, Uint8Array>;
+  expires: number;
+} | null = null;
 app.on('second-instance', () => {
   if (win) {
     if (win.isMinimized()) win.restore();
@@ -112,16 +120,24 @@ app.whenReady().then(async () => {
     win.webContents.on('will-attach-webview', (event) => event.preventDefault());
     win.webContents.session.setPermissionRequestHandler((_wc, _p, callback) => callback(false));
     win.webContents.session.setPermissionCheckHandler(() => false);
+    registerVisualIpc(handle, store, win);
+    win.webContents.session.webRequest.onBeforeRequest(
+      { urls: ['http://*/*', 'https://*/*', 'ws://*/*', 'wss://*/*'] },
+      (_details, callback) => callback({ cancel: true })
+    );
     handle('grello:load', () => store.read());
     handle('grello:dispatch', (raw) => store.dispatch(actionSchema.parse(raw)));
     handle('grello:export', async () => {
       const { filePath, canceled } = await dialog.showSaveDialog(win!, {
         title: 'Exportar meus dados',
-        defaultPath: 'Grello-' + new Date().toISOString().slice(0, 10) + '.json',
-        filters: [{ name: 'Dados Grello', extensions: ['json'] }],
+        defaultPath: 'Grello-' + new Date().toISOString().slice(0, 10) + '.grello',
+        filters: [{ name: 'Pacote completo Grello', extensions: ['grello'] }],
       });
       if (canceled || !filePath) return false;
-      await writeFile(filePath, JSON.stringify(exportData(store.read().state), null, 2), 'utf8');
+      await writeFile(
+        filePath,
+        encodePackage(store.bundle(), (id) => store.readImage(id).bytes)
+      );
       return true;
     });
     handle('grello:preview-import', async () => {
@@ -129,18 +145,44 @@ app.whenReady().then(async () => {
       const { filePaths, canceled } = await dialog.showOpenDialog(win!, {
         title: 'Escolha uma exportação do Grello',
         properties: ['openFile'],
-        filters: [{ name: 'Dados Grello', extensions: ['json'] }],
+        filters: [{ name: 'Dados Grello', extensions: ['grello', 'json'] }],
       });
       if (canceled) return null;
       const size = (await stat(filePaths[0])).size;
-      if (size > 25 * 1024 * 1024) throw new Error('O arquivo excede o limite de 25 MB.');
-      const state = parseExport(JSON.parse(await readFile(filePaths[0], 'utf8')));
-      pending = { token: randomUUID(), state, expires: Date.now() + 15 * 60 * 1000 };
+      const isJson = filePaths[0].toLowerCase().endsWith('.json');
+      if (size > (isJson ? 25 : 100) * 1024 * 1024)
+        throw Error('O arquivo excede o limite: 25 MB para JSON ou 100 MB para pacote.');
+      const content = await readFile(filePaths[0]);
+      const loaded = isJson
+        ? {
+            bundle: parseVisualDocument(JSON.parse(content.toString('utf8'))),
+            files: new Map<string, Uint8Array>(),
+          }
+        : decodePackage(content);
+      if (isJson && loaded.bundle.assets.length)
+        throw Error('Este JSON depende de imagens. Importe o pacote .grello completo.');
+      // Decode every package image before presenting a valid preview. The store never accepts remote resources.
+      for (const asset of loaded.bundle.assets) {
+        const bytes = loaded.files.get(asset.id)!;
+        const { nativeImage } = await import('electron');
+        if (nativeImage.createFromBuffer(Buffer.from(bytes)).isEmpty())
+          throw Error('O pacote contém uma imagem inválida.');
+      }
+      const state = loaded.bundle;
+      pending = {
+        token: randomUUID(),
+        state,
+        files: loaded.files,
+        expires: Date.now() + 15 * 60 * 1000,
+      };
       return {
         token: pending.token,
-        boards: state.boards.length,
-        cards: state.cards.length,
-        columns: state.columns.length,
+        visualBoards: state.visuals.length,
+        assets: state.assets.length,
+        legacy: isJson && !state.visuals.length,
+        boards: state.tasks.boards.length,
+        cards: state.tasks.cards.length,
+        columns: state.tasks.columns.length,
       };
     });
     handle('grello:import', (token, mode) => {
@@ -148,7 +190,7 @@ app.whenReady().then(async () => {
       z.enum(['merge', 'replace']).parse(mode);
       if (!pending || pending.token !== token || pending.expires < Date.now())
         throw new Error('Selecione o arquivo novamente para importar.');
-      const result = store.import(pending.state, mode);
+      const result = store.importBundle(pending.state, mode, pending.files);
       pending = null;
       return result;
     });

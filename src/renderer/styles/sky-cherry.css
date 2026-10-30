@@ -285,3 +285,102 @@
 :root[data-theme='dark'] .painted-blossom-art {
   filter: saturate(0.92) brightness(0.9);
 }
+
+/* Five local illustrated petals. Only compositor transforms/opacity move; no particle state. */
+.falling-petals {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+  container-type: size;
+}
+.falling-petal {
+  position: absolute;
+  top: 0;
+  left: var(--petal-x);
+  width: var(--petal-size);
+  height: calc(var(--petal-size) * 1.7);
+  background: url('../assets/sky-cherry/petal-day.svg') center/contain no-repeat;
+  opacity: 0;
+  animation: sidebar-petal-fall var(--petal-time) linear var(--petal-delay) infinite;
+  animation-play-state: paused;
+}
+:root[data-theme='dark'] .falling-petal {
+  background-image: url('../assets/sky-cherry/petal-night.svg');
+}
+.falling-petal:nth-child(1) {
+  --petal-x: 12%;
+  --petal-size: 9px;
+  --petal-time: 19s;
+  --petal-delay: -12s;
+  --petal-drift: 22px;
+  --petal-turn: 120deg;
+}
+.falling-petal:nth-child(2) {
+  --petal-x: 34%;
+  --petal-size: 7px;
+  --petal-time: 23s;
+  --petal-delay: -3s;
+  --petal-drift: -18px;
+  --petal-turn: -95deg;
+}
+.falling-petal:nth-child(3) {
+  --petal-x: 56%;
+  --petal-size: 10px;
+  --petal-time: 17s;
+  --petal-delay: -8s;
+  --petal-drift: 27px;
+  --petal-turn: 150deg;
+}
+.falling-petal:nth-child(4) {
+  --petal-x: 75%;
+  --petal-size: 8px;
+  --petal-time: 25s;
+  --petal-delay: -20s;
+  --petal-drift: -24px;
+  --petal-turn: -140deg;
+}
+.falling-petal:nth-child(5) {
+  --petal-x: 90%;
+  --petal-size: 8px;
+  --petal-time: 21s;
+  --petal-delay: -15s;
+  --petal-drift: -12px;
+  --petal-turn: 85deg;
+}
+:root[data-decorative-motion='running'] .falling-petal {
+  animation-play-state: running;
+}
+:root[data-decorative-effects='off'] .falling-petals {
+  visibility: hidden;
+}
+@keyframes sidebar-petal-fall {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -24px, 0) rotate(-25deg);
+  }
+  8% {
+    opacity: 0.95;
+  }
+  40% {
+    transform: translate3d(var(--petal-drift), 40cqh, 0) rotate(calc(var(--petal-turn) * 0.4));
+  }
+  70% {
+    transform: translate3d(calc(var(--petal-drift) * 0.3), 70cqh, 0)
+      rotate(calc(var(--petal-turn) * 0.7));
+  }
+  92% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--petal-drift), calc(100cqh + 24px), 0) rotate(var(--petal-turn));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .falling-petal {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
