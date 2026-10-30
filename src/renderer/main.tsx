@@ -6,6 +6,7 @@ import './styles/app.css';
 import './styles/appearance.css';
 import './styles/sky-cherry.css';
 import './styles/visual.css';
+import './styles/interactions.css';
 (window as Window & { EXCALIDRAW_ASSET_PATH?: string }).EXCALIDRAW_ASSET_PATH = new URL(
   '/excalidraw/',
   location.href

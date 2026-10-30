@@ -1,6 +1,6 @@
 # Avisos de terceiros
 
-Inventário da versão 1.2.0, coletado dos pacotes exatos instalados por npm ci. Textos completos em LICENSES. A licença do Grello está no arquivo LICENSE.
+Inventário da versão 1.2.1, coletado dos pacotes exatos instalados por npm ci. Textos completos em LICENSES. A licença do Mirello está no arquivo LICENSE.
 
 | Pacote | Versão | Licença declarada | Uso |
 | --- | --- | --- | --- |

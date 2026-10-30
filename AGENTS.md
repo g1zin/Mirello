@@ -1,4 +1,4 @@
-# Instruções para futuras alterações no Grello
+# Instruções para futuras alterações no Mirello
 
 ## Objetivo e ambiente
 
@@ -42,7 +42,7 @@ Para testar o desenvolvimento com isolamento, `tests/vertical.mjs` configura `GR
 
 ## Preservação de dados
 
-- Caminho permanente: `%APPDATA%\Grello\grello.sqlite`; backups em `backups`. Preserve esse caminho, `appId` e o nome da aplicação nas atualizações.
+- Caminho permanente: `%APPDATA%\Grello\grello.sqlite`; backups em `backups`. Preserve esse caminho e `appId` nas atualizações. Desde 1.2.1, o nome público é Mirello; não renomeie o diretório de dados ou os formatos internos grello.
 - Nunca apague ou recrie o banco existente para corrigir um bug.
 - Não edite uma migração já publicada. Acrescente uma nova ao final, incremente a versão e teste atualização a partir da versão anterior.
 - O backup de um banco existente deve ocorrer **antes** da migração e fora da transação que altera o esquema. Se o backup falhar, aborte a migração.
@@ -111,8 +111,14 @@ Toda interface cotidiana deve ficar em pt-BR, com foco visível, mensagens de er
 - scripts/build.mjs copia fontes locais e redireciona o fallback CDN do editor para grello://app/excalidraw. Não libere a rede/CSP para corrigir falta de recurso. Confira esse ajuste ao atualizar a biblioteca.
 - Comandos adicionais: npm.cmd run test:visual; npm.cmd run test:petals. Ambos aceitam GRELLO_PACKAGED=1. Colagem e diálogos são simulados apenas dentro do processo de teste; não leia a área de transferência pessoal.
 - test:petals observa 90 segundos por modo, verifica controles, redução de movimentos e pausa por visibilidade. Não use temporizadores JavaScript para animar as pétalas no aplicativo.
-- A versão 1.2.0 está em avaliação local; não publique nova tag/Release sem autorização posterior do usuário.
+- A versão 1.2.1 está em avaliação local; não publique nova tag/Release sem autorização posterior do usuário.
 
 - O empacotamento usa scripts/prepare-package.mjs e .package-app (ignorado). O manifesto temporário não declara dependências porque main/preload/renderer já estão empacotados pelo build; mantenha dependências e lockfile completos na raiz. Não adicione módulos Node externos sem atualizar essa estratégia e os testes do executável.
 
 - Inserções programáticas no editor usam flushSync; o fechamento espera operações de imagem e captura o estado final mesmo sem novo onChange. Preserve o teste que troca de aba imediatamente após adicionar uma imagem e o teste com câmera ampliada.
+
+## Marca e hover (1.2.1)
+
+- Nome público Mirello; monograma original em src/renderer/assets/brand-mark.svg, apresentado por BrandMark.tsx. scripts/create-icon.ps1 reproduz o mesmo traçado nos ícones do Windows.
+- Mantenha com.grello.desktop, %APPDATA%\Grello, grello.sqlite, protocolo/IPC/storage grello e formatos JSON/pacote anteriores para compatibilidade. Não migre dados apenas por mudança de marca.
+- O contorno de hover escuro usa tokens --hover-outline e --hover-outline-width e styles/interactions.css; não substitua o foco de teclado nem mude dimensões dos controles.

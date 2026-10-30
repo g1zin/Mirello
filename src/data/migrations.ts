@@ -12,7 +12,7 @@ export function migrate(db: DatabaseSync, before: () => void) {
   const version = Number(db.prepare('PRAGMA user_version').get()!.user_version);
   if (version > SCHEMA_VERSION)
     throw new Error(
-      'Este banco foi criado por uma versão mais nova do Grello. Abra com a versão mais recente.'
+      'Este banco foi criado por uma versão mais nova do Mirello. Abra com a versão mais recente.'
     );
   if (version === SCHEMA_VERSION) return;
   if (version > 0) before();

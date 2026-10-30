@@ -17,7 +17,7 @@ export function AppearanceSettings({
         <div className="style-picker">
           {(
             [
-              { id: 'original', name: 'Original', description: 'Cores e simplicidade do Grello.' },
+              { id: 'original', name: 'Original', description: 'Cores e simplicidade do Mirello.' },
               {
                 id: 'sky-cherry',
                 name: 'Céu e Cerejeiras',

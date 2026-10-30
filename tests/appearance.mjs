@@ -16,7 +16,7 @@ const button = (name) => page.getByRole('button', { name, exact: true });
 async function launch() {
   app = await electron.launch({
     ...(packaged
-      ? { executablePath: resolve('release/win-unpacked/Grello.exe'), args: [] }
+      ? { executablePath: resolve('release/win-unpacked/Mirello.exe'), args: [] }
       : { args: [resolve('.')] }),
     env: { ...process.env, GRELLO_E2E: '1', GRELLO_TEST_DATA: data },
     timeout: 60000,
@@ -24,6 +24,18 @@ async function launch() {
   page = await app.firstWindow();
   page.on('pageerror', (e) => errors.push(e.message));
   await page.getByText('Meu espaço', { exact: true }).waitFor();
+  assert.equal(await page.title(), 'Mirello');
+  assert.equal(await app.evaluate(({ app }) => app.getName()), 'Mirello');
+  await expect(page.locator('.brand')).toContainText('mirello.');
+  await expect(page.locator('.brand-monogram').first()).toBeVisible();
+  assert(!(await page.locator('.brand svg.lucide-leaf').count()));
+  assert.notEqual(
+    await page
+      .locator('.brand-monogram')
+      .first()
+      .evaluate((e) => getComputedStyle(e).maskImage),
+    'none'
+  );
   await page.context().setOffline(true);
 }
 async function settings() {
@@ -181,6 +193,46 @@ try {
     for (const mode of ['light', 'dark']) {
       await selectStyle(style, mode);
       await assertUsable();
+      if (mode === 'dark') {
+        for (const target of [
+          page.locator('.card').first(),
+          button('Configurações'),
+          page.getByLabel('Filtrar por etiqueta', { exact: true }),
+        ]) {
+          const before = await target.evaluate((e) => ({
+            width: e.clientWidth,
+            height: e.clientHeight,
+          }));
+          await target.hover();
+          const ring = await target.evaluate((e) => {
+            const c = getComputedStyle(e);
+            return {
+              width: c.outlineWidth,
+              offset: c.outlineOffset,
+              color: c.outlineColor,
+              expected: getComputedStyle(document.documentElement)
+                .getPropertyValue('--hover-outline')
+                .trim(),
+              size: { width: e.clientWidth, height: e.clientHeight },
+            };
+          });
+          assert.equal(ring.width, '1px');
+          assert.equal(ring.offset, '-1px');
+          assert.notEqual(ring.color, 'rgba(0, 0, 0, 0)');
+          assert.deepEqual(ring.size, before);
+        }
+        await page.locator('.card').first().hover();
+        await screenshot((style === 'original' ? 'original' : 'cherry') + '-dark-hover-card');
+        await button('Configurações').hover();
+        await screenshot((style === 'original' ? 'original' : 'cherry') + '-dark-hover-control');
+        await page.keyboard.press('Tab');
+        const focusedRing = await page
+          .locator(':focus-visible')
+          .first()
+          .evaluate((e) => getComputedStyle(e).outlineWidth);
+        assert.equal(focusedRing, '3px');
+      }
+      await page.mouse.move(800, 140);
       await screenshot((style === 'original' ? 'original' : 'cherry') + '-' + mode);
       assert.deepEqual((await state()).boards, baseline.boards);
     }

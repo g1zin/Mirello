@@ -137,11 +137,11 @@ export function SettingsPanel({
           </button>
         </div>
         <p className="muted small-text">
-          Antes de substituir dados ou atualizar o banco, o Grello cria um backup. Os backups
+          Antes de substituir dados ou atualizar o banco, o Mirello cria um backup. Os backups
           permanecem neste computador; copie os mais importantes para outro local.
         </p>
         <p className="muted small-text">
-          Para restaurar um backup: feche o Grello, guarde uma cópia da pasta de dados e substitua
+          Para restaurar um backup: feche o Mirello, guarde uma cópia da pasta de dados e substitua
           grello.sqlite e a pasta assets pelas cópias contidas na pasta .grello-backup. Backups
           antigos .sqlite restauram somente os dados anteriores ao quadro visual. Veja o README.
         </p>
@@ -173,7 +173,7 @@ export function SettingsPanel({
         </p>
       )}
       <div className="about">
-        Grello · versão 1.2.0
+        Mirello · versão 1.2.1
         <br />
         Feito para organizar o seu cotidiano.
       </div>

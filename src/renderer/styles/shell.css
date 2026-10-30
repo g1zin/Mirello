@@ -32,7 +32,7 @@
   place-items: center;
   transform: rotate(-5deg);
 }
-.brand-mark svg {
+.brand-mark .brand-monogram {
   transform: rotate(5deg);
 }
 .brand-period {
@@ -288,4 +288,18 @@
   .welcome h1 {
     font-size: 36px;
   }
+}
+
+.brand-monogram {
+  display: inline-block;
+  flex-shrink: 0;
+  background: currentColor;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  vertical-align: middle;
+}
+.boot > .brand-monogram {
+  margin: auto;
+  color: var(--accent);
 }

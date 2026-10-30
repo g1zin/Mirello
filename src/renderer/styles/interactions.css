@@ -1,0 +1,17 @@
+/* Insets keep hover from shifting controls or obscuring keyboard focus.
+   Card bodies share the outer card ring instead of drawing a second rectangle. */
+@media (hover: hover) {
+  :root[data-theme='dark']
+    :is(
+      button:not(.card-open),
+      select,
+      textarea,
+      input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.search input),
+      .search:not(:focus-within),
+      .card:not(:focus-within),
+      .excalidraw .ToolIcon
+    ):not(:disabled):not([aria-disabled='true']):hover:not(:focus-visible) {
+    outline: var(--hover-outline-width) solid var(--hover-outline);
+    outline-offset: calc(-1 * var(--hover-outline-width));
+  }
+}

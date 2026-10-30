@@ -14,7 +14,7 @@ async function launch() {
   const port = socket.address().port;
   await new Promise((r) => socket.close(r));
   child = spawn(
-    resolve('release/Grello-Portatil-1.2.0.exe'),
+    resolve('release/Mirello-Portatil-1.2.1.exe'),
     ['--remote-debugging-port=' + port, '--remote-debugging-address=127.0.0.1'],
     {
       env: { ...process.env, GRELLO_E2E: '1', GRELLO_TEST_DATA: data },

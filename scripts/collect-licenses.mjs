@@ -90,7 +90,7 @@ for (const p of [...packages.values()].sort((a, b) => a.name.localeCompare(b.nam
 const content =
   '# Avisos de terceiros\n\nInventário da versão ' +
   pkg.version +
-  ', coletado dos pacotes exatos instalados por npm ci. Textos completos em LICENSES. A licença do Grello está no arquivo LICENSE.\n\n| Pacote | Versão | Licença declarada | Uso |\n| --- | --- | --- | --- |\n' +
+  ', coletado dos pacotes exatos instalados por npm ci. Textos completos em LICENSES. A licença do Mirello está no arquivo LICENSE.\n\n| Pacote | Versão | Licença declarada | Uso |\n| --- | --- | --- | --- |\n' +
   rows.join('\n') +
   '\n\nFontes locais do editor: Assistant, Cascadia Code, Excalifont, Liberation Sans, Lilita One, Nunito, Virgil e Xiaolai (SIL OFL 1.1); Comic Shanns (MIT). Arquivos inalterados de @excalidraw/excalidraw 0.18.1; avisos e metadados em LICENSES/font-*.txt. A interface principal continua usando fontes do Windows sem redistribuir Segoe UI.\n' +
   '\n\nLucide inclui os avisos ISC e MIT/Feather no mesmo arquivo. Os avisos adicionais de Chromium e Node.js permanecem no LICENSES.chromium.html do runtime Electron; o LICENSE do Electron também é preservado.\n\nOs pacotes de desenvolvimento não são módulos chamados pelo usuário do aplicativo; seus avisos são conservados para transparência da cadeia de build.\n';

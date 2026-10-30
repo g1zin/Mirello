@@ -1,3 +1,4 @@
+import { BrandMark } from './components/BrandMark';
 import { lazy, Suspense } from 'react';
 import { useEffect, useState } from 'react';
 import {
@@ -49,7 +50,7 @@ export function App() {
         const ok = await prepareClose();
         await w.waitForIdle();
         if (!ok)
-          w.setError('Há alterações não salvas. Corrija os campos antes de fechar o Grello.');
+          w.setError('Há alterações não salvas. Corrija os campos antes de fechar o Mirello.');
         return ok;
       }),
     [w.waitForIdle]
@@ -88,8 +89,8 @@ export function App() {
   if (!s)
     return (
       <div className="boot">
-        <Leaf size={48} />
-        <h1>Grello</h1>
+        <BrandMark size={48} />
+        <h1>Mirello</h1>
         <p>{w.error || 'Preparando seu espaço…'}</p>
         {w.error && <button onClick={() => location.reload()}>Tentar novamente</button>}
       </div>
@@ -101,14 +102,14 @@ export function App() {
         <div className="brand">
           <Decorations region="brand" />
           <div className="brand-mark">
-            <Leaf size={24} />
+            <BrandMark />
           </div>
           <span>
-            grello<span className="brand-period">.</span>
+            mirello<span className="brand-period">.</span>
           </span>
         </div>
         <div className="personal-space">
-          <span className="avatar">G</span>
+          <span className="avatar">M</span>
           <div>
             <strong>Meu espaço</strong>
             <small>Pessoal · offline</small>

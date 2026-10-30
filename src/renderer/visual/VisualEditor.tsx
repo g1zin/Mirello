@@ -461,7 +461,7 @@ export function VisualEditor({
           }}
           onPaste={(data) => {
             if (data.files && Object.keys(data.files).some((id) => !api?.getFiles()[id])) {
-              setError('Para transportar imagens, use um pacote Grello ou adicione o arquivo.');
+              setError('Para transportar imagens, use um pacote Mirello ou adicione o arquivo.');
               return false;
             }
             if (

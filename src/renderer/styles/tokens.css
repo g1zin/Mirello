@@ -13,6 +13,8 @@
   --muted: #65766c;
   --line: #dfe5df;
   --line-strong: #b8c6bc;
+  --hover-outline: transparent;
+  --hover-outline-width: 1px;
   --danger: #ac3948;
   --danger-bg: #fbeaec;
   --success: #267155;
@@ -55,6 +57,7 @@
   --muted: #a2b5a7;
   --line: #34483c;
   --line-strong: #5f7968;
+  --hover-outline: #a8c8b8;
   --danger: #ffa7ae;
   --danger-bg: #472b31;
   --success: #9cdbb6;

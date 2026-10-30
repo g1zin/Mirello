@@ -8,14 +8,14 @@ A licença MIT existente do Grello foi mantida em [LICENSE](LICENSE), sem altera
 - **IA/Codex**: assistência na implementação, organização e automação de verificações.
 - **imagegen integrado**: geração das paisagens diurna/noturna e dos conjuntos de flores. Foram criados para o projeto, sem referências a personagens, marcas ou cenários de franquias. [Registro dos prompts e recursos](src/renderer/assets/sky-cherry/ARTWORK.md).
 - **Vetores de decoração**: composições locais em Decorations.tsx e pétalas SVG no diretório das artes.
-- **Ícones de interface**, incluindo a folha usada na composição da marca: **Lucide**, com licença ISC e avisos MIT do Feather nos ícones derivados. O texto integral instalado, incluindo a atribuição a Cole Bemis/Feather, está em LICENSES/lucide-react-LICENSE.txt.
-- **Ícone do aplicativo**: composição preparada para o Grello pelo script scripts/create-icon.ps1, com a letra g renderizada em bitmap usando Segoe UI.
+- **Ícones de interface**, incluindo a folha decorativa da nota lateral: **Lucide**, com licença ISC e avisos MIT do Feather nos ícones derivados. O texto integral instalado, incluindo a atribuição a Cole Bemis/Feather, está em LICENSES/lucide-react-LICENSE.txt.
+- **Ícone do aplicativo**: monograma M vetorial original do Mirello, reproduzido pelo script scripts/create-icon.ps1 sem dependência de fonte. Até 1.2.0, o ícone do Grello usava a letra g renderizada em bitmap com Segoe UI.
 
 As artes geradas com IA estão identificadas como tal; não são apresentadas como ilustrações desenhadas manualmente por Guilherme Alves.
 
 ## Fontes
 
-A interface usa Segoe UI Variable/Segoe UI disponíveis no Windows e fallback sans-serif. **Nenhum arquivo de Segoe UI é redistribuído** pelo projeto. Desde 1.2.0, o editor visual inclui as fontes locais documentadas abaixo; a interface principal continua usando a fonte do sistema. A composição bitmap do ícone não contém uma fonte embutida; componentes internos do Electron seguem os avisos da sua distribuição.
+A interface usa Segoe UI Variable/Segoe UI disponíveis no Windows e fallback sans-serif. **Nenhum arquivo de Segoe UI é redistribuído** pelo projeto. Desde 1.2.0, o editor visual inclui as fontes locais documentadas abaixo; a interface principal continua usando a fonte do sistema. O ícone atual é desenhado com traçados vetoriais, sem fonte embutida; componentes internos do Electron seguem os avisos da sua distribuição.
 
 A documentação da Microsoft distingue o uso/renderização e a criação de imagens da redistribuição dos arquivos de fonte: [FAQ oficial de fontes do Windows](https://learn.microsoft.com/en-us/typography/fonts/font-faq).
 
@@ -45,3 +45,6 @@ A interface principal continua com Segoe UI do Windows, sem redistribuir seus ar
 fflate 0.8.3 (MIT) implementa os pacotes ZIP. image-size 2.0.4 (MIT) confere dimensões de imagens antes da decodificação. A normalização de imagens acontece localmente no Chromium e no Electron, sem serviço externo. As cinco pétalas da lateral reutilizam as artes SVG locais já existentes; sua animação usa CSS.
 
 Os testes desta etapa são automatizados, com dados fictícios. Não se atribui a Guilherme uma aprovação ou novos testes manuais que ainda não ocorreram. A entrega 1.2.0 permanece local até sua avaliação.
+## Mirello (1.2.1)
+
+Mirello é o novo nome público do Grello. O monograma M foi desenhado como vetor original no projeto, sem fonte ou recurso externo adicional. Os dados e formatos existentes são preservados. Esta revisão ainda aguarda avaliação manual de Guilherme Alves.

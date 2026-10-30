@@ -11,7 +11,7 @@ const packaged = process.env.GRELLO_PACKAGED === '1',
   errors = [];
 const app = await electron.launch({
   ...(packaged
-    ? { executablePath: resolve('release/win-unpacked/Grello.exe'), args: [] }
+    ? { executablePath: resolve('release/win-unpacked/Mirello.exe'), args: [] }
     : { args: [resolve('.')] }),
   env: { ...process.env, GRELLO_E2E: '1', GRELLO_TEST_DATA: data },
   timeout: 60000,

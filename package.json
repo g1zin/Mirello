@@ -1,8 +1,8 @@
 {
   "name": "grello",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Organização pessoal offline em quadros Kanban.",
-  "author": "Grello",
+  "author": "Mirello",
   "license": "MIT",
   "private": true,
   "main": "dist/main.cjs",
@@ -48,7 +48,7 @@
   },
   "build": {
     "appId": "com.grello.desktop",
-    "productName": "Grello",
+    "productName": "Mirello",
     "asar": true,
     "files": [
       "dist/**/*",
@@ -75,15 +75,15 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "deleteAppDataOnUninstall": false,
-      "artifactName": "Grello-Instalador-${version}.${ext}"
+      "artifactName": "Mirello-Instalador-${version}.${ext}"
     },
     "portable": {
-      "artifactName": "Grello-Portatil-${version}.${ext}"
+      "artifactName": "Mirello-Portatil-${version}.${ext}"
     },
     "extraResources": [
       {
         "from": "LICENSE",
-        "to": "Grello-LICENSE.txt"
+        "to": "Mirello-LICENSE.txt"
       },
       {
         "from": "THIRD_PARTY_NOTICES.md",

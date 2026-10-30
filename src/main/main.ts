@@ -14,7 +14,9 @@ import { demoData } from '../domain/demo';
 protocol.registerSchemesAsPrivileged([
   { scheme: 'grello', privileges: { standard: true, secure: true, supportFetchAPI: true } },
 ]);
+app.setName('Mirello');
 const testDir = process.env.GRELLO_E2E === '1' ? process.env.GRELLO_TEST_DATA : undefined;
+// Keep the existing data directory and internal protocol for upgrade compatibility.
 app.setPath('userData', testDir || join(app.getPath('appData'), 'Grello'));
 if (!app.requestSingleInstanceLock()) {
   app.quit();
@@ -47,7 +49,7 @@ app.on('second-instance', () => {
 });
 function friendly(e: unknown) {
   if (e instanceof z.ZodError)
-    return 'Dados inválidos. Confira os campos ou selecione uma exportação compatível do Grello.';
+    return 'Dados inválidos. Confira os campos ou selecione uma exportação compatível do Mirello.';
   if (e instanceof SyntaxError) return 'O arquivo não contém um JSON válido.';
   const code = (e as NodeJS.ErrnoException)?.code;
   if (code === 'ENOSPC') return 'O disco está cheio. Libere espaço e tente novamente.';
@@ -86,7 +88,7 @@ app.whenReady().then(async () => {
     });
     Menu.setApplicationMenu(null);
     win = new BrowserWindow({
-      title: 'Grello',
+      title: 'Mirello',
       width: 1440,
       height: 930,
       minWidth: 960,
@@ -130,8 +132,8 @@ app.whenReady().then(async () => {
     handle('grello:export', async () => {
       const { filePath, canceled } = await dialog.showSaveDialog(win!, {
         title: 'Exportar meus dados',
-        defaultPath: 'Grello-' + new Date().toISOString().slice(0, 10) + '.grello',
-        filters: [{ name: 'Pacote completo Grello', extensions: ['grello'] }],
+        defaultPath: 'Mirello-' + new Date().toISOString().slice(0, 10) + '.grello',
+        filters: [{ name: 'Pacote completo Mirello', extensions: ['grello'] }],
       });
       if (canceled || !filePath) return false;
       await writeFile(
@@ -143,9 +145,9 @@ app.whenReady().then(async () => {
     handle('grello:preview-import', async () => {
       pending = null;
       const { filePaths, canceled } = await dialog.showOpenDialog(win!, {
-        title: 'Escolha uma exportação do Grello',
+        title: 'Escolha uma exportação do Mirello',
         properties: ['openFile'],
-        filters: [{ name: 'Dados Grello', extensions: ['grello', 'json'] }],
+        filters: [{ name: 'Dados Mirello', extensions: ['grello', 'json'] }],
       });
       if (canceled) return null;
       const size = (await stat(filePaths[0])).size;
@@ -211,7 +213,7 @@ app.whenReady().then(async () => {
     });
   } catch (e) {
     dialog.showErrorBox(
-      'Não foi possível abrir o Grello',
+      'Não foi possível abrir o Mirello',
       friendly(e) + '\nSeus dados não foram apagados.'
     );
     app.quit();

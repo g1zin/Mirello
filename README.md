@@ -1,8 +1,8 @@
-# Grello
+# Mirello
 
 Organização pessoal em um aplicativo desktop para Windows x64, com tarefas Kanban e um quadro visual para conectar referências e ideias. Funciona localmente e offline: sem conta, assinatura, colaboração, sincronização ou IA integrada.
 
-**Versão 1.2.0 em avaliação local.** Esta versão acrescenta Quadro visual e pétalas na lateral de Céu e Cerejeiras. Ainda não foi publicada no GitHub. A versão pública aprovada permanece [Grello 1.1.1](https://github.com/g1zin/grello/releases/tag/v1.1.1), que contém o Kanban e os temas anteriores.
+**Versão 1.2.1 em avaliação local.** Grello agora se chama Mirello, com monograma M e contornos sutis no hover escuro. A pasta de dados, os identificadores internos e os formatos de importação permanecem compatíveis. Esta versão acrescenta Quadro visual e pétalas na lateral de Céu e Cerejeiras. Ainda não foi publicada no GitHub. A versão pública aprovada permanece [Grello 1.1.1](https://github.com/g1zin/grello/releases/tag/v1.1.1), que contém o Kanban e os temas anteriores.
 
 ## Recursos
 
@@ -18,13 +18,15 @@ Organização pessoal em um aplicativo desktop para Windows x64, com tarefas Kan
 
 A interface principal mantém sua tipografia e os temas existentes. O editor usa [Excalidraw 0.18.1](https://docs.excalidraw.com/docs/@excalidraw/excalidraw/installation), sob licença MIT, sem chave ou serviço obrigatório. Todos os recursos necessários, inclusive fontes, são empacotados localmente. Embeds, recursos remotos e colaboração não estão habilitados.
 
+Capturas desta revisão: [marca e hover escuro](docs/screenshots/mirello-escuro-hover-cartao.png), [Original escuro](docs/screenshots/mirello-original-hover-controle.png) e [janela menor clara](docs/screenshots/mirello-claro-menor.png).
+
 ## Instalar e abrir
 
 Na entrega local, use os arquivos da pasta `release`:
 
-- `Grello-Instalador-1.2.0.exe`: assistente de instalação, com opção de pasta e atalhos. Depois, abra pelo atalho criado.
-- `Grello-Portatil-1.2.0.exe`: abra diretamente, sem instalar. Pode demorar alguns segundos para extrair o runtime temporário.
-- `SHA256SUMS-1.2.0.txt`: hashes dos executáveis desta entrega.
+- `Mirello-Instalador-1.2.1.exe`: assistente de instalação, com opção de pasta e atalhos. Depois, abra pelo atalho criado.
+- `Mirello-Portatil-1.2.1.exe`: abra diretamente, sem instalar. Pode demorar alguns segundos para extrair o runtime temporário.
+- `SHA256SUMS-1.2.1.txt`: hashes dos executáveis desta entrega.
 
 Os executáveis não têm assinatura digital comercial. O assistente, os atalhos e eventuais avisos do Windows precisam de conferência manual no computador de destino. Não há atualização automática.
 
@@ -38,10 +40,10 @@ Crie um quadro, adicione colunas e cartões na aba Tarefas. Clique no cartão pa
 
 Na aba Quadro visual:
 
-- **Imagem** abre a seleção de arquivos. Também é possível arrastar imagens do computador ou colá-las. PNG, JPEG e WebP são convertidos localmente para PNG gerenciado pelo Grello.
+- **Imagem** abre a seleção de arquivos. Também é possível arrastar imagens do computador ou colá-las. PNG, JPEG e WebP são convertidos localmente para PNG gerenciado pelo Mirello.
 - **Nota** cria uma nota com texto e cor. Duplo clique edita o texto; a seleção mostra controles de cor, tamanho e traço.
 - A barra de ferramentas do editor oferece texto, retângulo, elipse, desenho, linha, seta, seleção e borracha. Conecte nas bordas dos elementos para manter as ligações ao mover. Duplo clique em uma conexão permite texto de rótulo.
-- Espaço + arrastar ou a ferramenta Mão navega; os controles na barra do Grello ajustam o zoom. **Shift+1** ou Enquadrar todo o conteúdo mostra o conjunto.
+- Espaço + arrastar ou a ferramenta Mão navega; os controles na barra do Mirello ajustam o zoom. **Shift+1** ou Enquadrar todo o conteúdo mostra o conjunto.
 - **Ctrl+Z** desfaz, **Ctrl+Shift+Z** refaz, **Ctrl+D** duplica; Delete remove elementos selecionados. O menu de contexto permite ordenar camadas. Esses atalhos do editor não atuam sobre campos de digitação.
 - **Vincular cartão** pesquisa tarefas do mesmo quadro, inclusive arquivadas. Selecione a referência e use **Abrir cartão**, ou sua ação de vínculo, para abrir o painel existente.
 
@@ -89,12 +91,12 @@ Para um pacote `.grello`, use **Importar dados → Substituir com backup**.
 
 Para uma pasta `.grello-backup`:
 
-1. Feche completamente o Grello. Use uma versão compatível com o esquema do backup.
+1. Feche completamente o Mirello. Use uma versão compatível com o esquema do backup.
 2. Copie a pasta de dados atual inteira para outro local seguro.
 3. Confira que o backup tem `manifest.json`, `grello.sqlite` e `assets`. Não use uma pasta terminada em `.incomplete`.
 4. Guarde o banco atual, WAL/SHM e a pasta assets juntos na cópia de segurança, fora da pasta ativa.
 5. Copie `grello.sqlite` e a pasta `assets` do backup para a pasta de dados ativa. Não misture os arquivos WAL/SHM antigos com o banco restaurado.
-6. Reabra o Grello e confira tarefas e imagens. Preserve o backup original.
+6. Reabra o Mirello e confira tarefas e imagens. Preserve o backup original.
 
 O manifesto registra SHA-256 e tamanho dos arquivos; por exemplo, `Get-FileHash -Algorithm SHA256 caminho-do-arquivo` permite conferir um arquivo antes da cópia. Os testes de dados recuperam um backup completo em uma pasta temporária e comparam banco, cenas e bytes das imagens.
 
@@ -129,10 +131,10 @@ A primeira instalação de ferramentas exige internet; o aplicativo pronto não 
 
 Leia [AGENTS.md](AGENTS.md) antes de alterar dados. O banco usa esquema **4**, sem modificar as migrações já publicadas. O esquema JSON antigo continua testado com [grello-exemplo.json](docs/importacao/grello-exemplo.json), que permanece intacto.
 
-Os resultados e capturas da entrega local ficam em [VALIDACAO-1.2.0.md](docs/VALIDACAO-1.2.0.md). A aprovação manual desta versão ainda está pendente. Não há validação completa de leitores de tela, outras escalas de DPI, instalações corporativas, encerramento forçado ou uso nos limites máximos de dados. O assistente de instalação e seus atalhos devem ser conferidos manualmente.
+Os resultados e capturas da entrega local ficam em [VALIDACAO-1.2.1.md](docs/VALIDACAO-1.2.1.md). A aprovação manual desta versão ainda está pendente. Não há validação completa de leitores de tela, outras escalas de DPI, instalações corporativas, encerramento forçado ou uso nos limites máximos de dados. O assistente de instalação e seus atalhos devem ser conferidos manualmente.
 
 ## Autoria e licenças
 
-Guilherme Alves conduz o projeto, as escolhas visuais e os testes manuais de aprovação da versão 1.1.1. A implementação e parte da validação automatizada têm assistência de IA/Codex. As paisagens e flores geradas para o projeto estão identificadas com sua procedência. Esta versão 1.2.0 aguarda avaliação de Guilherme.
+Guilherme Alves conduz o projeto, as escolhas visuais e os testes manuais de aprovação da versão 1.1.1. A implementação e parte da validação automatizada têm assistência de IA/Codex. As paisagens e flores geradas para o projeto estão identificadas com sua procedência. Esta versão 1.2.1 aguarda avaliação de Guilherme.
 
 A licença MIT já existente foi preservada. Excalidraw é MIT; as fontes locais do editor mantêm seus avisos SIL OFL 1.1 ou MIT. Não redistribuímos Segoe UI. Consulte [LICENSE](LICENSE), [CREDITS.md](CREDITS.md), [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) e [LICENSES](LICENSES).
