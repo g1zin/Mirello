@@ -1,6 +1,6 @@
 # Mirello 1.2.1 — marca e hover
 
-Entrega local, sem publicação de tag/Release. A versão anterior está preservada no commit a60ec5d. Não foram acessados ou alterados os dados reais do usuário.
+Registro das verificações locais anteriores à publicação. Em 30/10/2026, Guilherme Alves informou que o teste local passou, aprovou a versão e autorizou publicar código e Release. A versão anterior está preservada no commit a60ec5d. Não foram acessados ou alterados os dados reais do usuário.
 
 ## Alterações
 
@@ -21,4 +21,4 @@ Entrega local, sem publicação de tag/Release. A versão anterior está preserv
 
 Portátil final: abriu offline, criou quadro e nota visual e preservou ambos após reiniciar. Instalador e portátil Windows x64 gerados; metadados Mirello 1.2.1 e ausência de assinatura conferidos. Ícone incorporado no executável Windows inspecionado. Main compilado, ícones e créditos empacotados comparados com os arquivos atuais; SHA256SUMS-1.2.1.txt gerado. Formatação e auditoria local passaram. Os pacotes foram finalizados com electron-builder --prepackaged a partir do executável já validado, com a revisão final dos créditos.
 
-As verificações do quadro visual e os limites da versão base estão no [relatório 1.2.0](VALIDACAO-1.2.0.md). A bateria completa do editor não foi repetida nesta revisão de marca/hover. Os testes usam perfis isolados; os diálogos nativos de arquivos são simulados. Instalação sobre a instalação pessoal, atalhos e avisos do Windows ainda exigem conferência manual. Executáveis sem assinatura digital comercial. Não houve publicação no GitHub.
+As verificações do quadro visual e os limites da versão base estão no [relatório 1.2.0](VALIDACAO-1.2.0.md). A bateria completa do editor não foi repetida nesta revisão de marca/hover. Os testes usam perfis isolados; os diálogos nativos de arquivos são simulados. Instalação sobre a instalação pessoal, atalhos e avisos do Windows ainda exigem conferência manual. Executáveis sem assinatura digital comercial. A publicação foi autorizada após a aprovação local; este relatório não atribui ao usuário testes manuais específicos além do que ele informou.

@@ -2,7 +2,9 @@
 
 Organização pessoal em um aplicativo desktop para Windows x64, com tarefas Kanban e um quadro visual para conectar referências e ideias. Funciona localmente e offline: sem conta, assinatura, colaboração, sincronização ou IA integrada.
 
-**Versão 1.2.1 em avaliação local.** Grello agora se chama Mirello, com monograma M e contornos sutis no hover escuro. A pasta de dados, os identificadores internos e os formatos de importação permanecem compatíveis. Esta versão acrescenta Quadro visual e pétalas na lateral de Céu e Cerejeiras. Ainda não foi publicada no GitHub. A versão pública aprovada permanece [Grello 1.1.1](https://github.com/g1zin/grello/releases/tag/v1.1.1), que contém o Kanban e os temas anteriores.
+**Mirello 1.2.1 — aprovado para publicação.** Grello agora se chama Mirello, com monograma M e contornos sutis no hover escuro. Esta versão reúne o Quadro visual, imagens locais, referências aos cartões, pacotes completos e pétalas na lateral. A pasta de dados e os formatos de importação continuam compatíveis.
+
+Baixe o aplicativo na [Release Mirello 1.2.1](https://github.com/g1zin/grello/releases/tag/v1.2.1). O repositório mantém o endereço original `g1zin/grello`; a versão anterior [Grello 1.1.1](https://github.com/g1zin/grello/releases/tag/v1.1.1) permanece disponível.
 
 ## Recursos
 
@@ -22,7 +24,7 @@ Capturas desta revisão: [marca e hover escuro](docs/screenshots/mirello-escuro-
 
 ## Instalar e abrir
 
-Na entrega local, use os arquivos da pasta `release`:
+Na [Release oficial](https://github.com/g1zin/grello/releases/tag/v1.2.1), abra a seção **Assets** e baixe uma das opções abaixo. Para builds locais, os mesmos arquivos ficam na pasta `release`:
 
 - `Mirello-Instalador-1.2.1.exe`: assistente de instalação, com opção de pasta e atalhos. Depois, abra pelo atalho criado.
 - `Mirello-Portatil-1.2.1.exe`: abra diretamente, sem instalar. Pode demorar alguns segundos para extrair o runtime temporário.
@@ -32,7 +34,7 @@ Os executáveis não têm assinatura digital comercial. O assistente, os atalhos
 
 **Portátil descreve a execução do programa, não a localização dos dados.** As duas versões usam a mesma pasta de dados do Windows; mover o executável não leva os seus quadros junto. Para transportar dados e imagens, use um pacote completo.
 
-Para a versão pública 1.1.1, baixe somente os arquivos na [Release oficial](https://github.com/g1zin/grello/releases/tag/v1.1.1). O quadro visual estará apenas nesta entrega local até nova aprovação.
+A versão 1.1.1 continua na sua [Release original](https://github.com/g1zin/grello/releases/tag/v1.1.1). Como o quadro visual usa um esquema de banco mais recente, leia as instruções de restauração antes de voltar a uma versão anterior.
 
 ## Usar tarefas e referências
 
@@ -131,10 +133,10 @@ A primeira instalação de ferramentas exige internet; o aplicativo pronto não 
 
 Leia [AGENTS.md](AGENTS.md) antes de alterar dados. O banco usa esquema **4**, sem modificar as migrações já publicadas. O esquema JSON antigo continua testado com [grello-exemplo.json](docs/importacao/grello-exemplo.json), que permanece intacto.
 
-Os resultados e capturas da entrega local ficam em [VALIDACAO-1.2.1.md](docs/VALIDACAO-1.2.1.md). A aprovação manual desta versão ainda está pendente. Não há validação completa de leitores de tela, outras escalas de DPI, instalações corporativas, encerramento forçado ou uso nos limites máximos de dados. O assistente de instalação e seus atalhos devem ser conferidos manualmente.
+Os resultados e capturas desta versão ficam em [VALIDACAO-1.2.1.md](docs/VALIDACAO-1.2.1.md). Guilherme Alves informou que o teste local passou e aprovou a publicação em 30/10/2026. Não há validação completa de leitores de tela, outras escalas de DPI, instalações corporativas, encerramento forçado ou uso nos limites máximos de dados. O assistente de instalação e seus atalhos devem ser conferidos manualmente.
 
 ## Autoria e licenças
 
-Guilherme Alves conduz o projeto, as escolhas visuais e os testes manuais de aprovação da versão 1.1.1. A implementação e parte da validação automatizada têm assistência de IA/Codex. As paisagens e flores geradas para o projeto estão identificadas com sua procedência. Esta versão 1.2.1 aguarda avaliação de Guilherme.
+Guilherme Alves conduz o projeto, as escolhas visuais e os testes manuais de aprovação da versão 1.1.1. A implementação e parte da validação automatizada têm assistência de IA/Codex. As paisagens e flores geradas para o projeto estão identificadas com sua procedência. Guilherme aprovou a versão 1.2.1 após seu teste local em 30/10/2026.
 
 A licença MIT já existente foi preservada. Excalidraw é MIT; as fontes locais do editor mantêm seus avisos SIL OFL 1.1 ou MIT. Não redistribuímos Segoe UI. Consulte [LICENSE](LICENSE), [CREDITS.md](CREDITS.md), [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) e [LICENSES](LICENSES).

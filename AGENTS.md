@@ -111,7 +111,7 @@ Toda interface cotidiana deve ficar em pt-BR, com foco visível, mensagens de er
 - scripts/build.mjs copia fontes locais e redireciona o fallback CDN do editor para grello://app/excalidraw. Não libere a rede/CSP para corrigir falta de recurso. Confira esse ajuste ao atualizar a biblioteca.
 - Comandos adicionais: npm.cmd run test:visual; npm.cmd run test:petals. Ambos aceitam GRELLO_PACKAGED=1. Colagem e diálogos são simulados apenas dentro do processo de teste; não leia a área de transferência pessoal.
 - test:petals observa 90 segundos por modo, verifica controles, redução de movimentos e pausa por visibilidade. Não use temporizadores JavaScript para animar as pétalas no aplicativo.
-- A versão 1.2.1 está em avaliação local; não publique nova tag/Release sem autorização posterior do usuário.
+- A versão 1.2.1 foi aprovada pelo usuário em 30/10/2026, com autorização explícita para publicar código, tag e Release. Novas versões exigem autorização própria para publicação.
 
 - O empacotamento usa scripts/prepare-package.mjs e .package-app (ignorado). O manifesto temporário não declara dependências porque main/preload/renderer já estão empacotados pelo build; mantenha dependências e lockfile completos na raiz. Não adicione módulos Node externos sem atualizar essa estratégia e os testes do executável.
 
